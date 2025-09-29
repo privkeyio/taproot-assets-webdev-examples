@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAPD CORS & Authentication Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #007acc;
+            padding-bottom: 10px;
+        }
+        .demo-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .error {
+            background-color: #ffe6e6;
+            border-left: 4px solid #ff4444;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            background-color: #007acc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #005a9e;
+        }
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .code-block {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        #output {
+            background-color: #000;
+            color: #00ff00;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            min-height: 100px;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌐 TAPD CORS & Authentication Demo</h1>
+        
+        <div class="warning">
+            <strong>⚠️ This demo shows why web developers struggle with TAPD integration</strong><br>
+            TAPD REST API: https://127.0.0.1:8289<br>
+            Expected issues: CORS errors, TLS certificate problems, macaroon authentication complexity
+        </div>
+
+        <div class="demo-section">
+            <h2>1. Direct API Call (Will Fail with CORS)</h2>
+            <p>This demonstrates the immediate wall web developers hit when trying to call TAPD directly from a browser:</p>
+            <button onclick="attemptDirectCall()">Try Direct API Call</button>
+            <div class="code-block">// What we're trying to do:
+fetch('https://127.0.0.1:8289/v1/taproot-assets/assets')
+  .then(response => response.json())
+  .then(data => console.log(data))</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>2. Macaroon Authentication Complexity</h2>
+            <p>Even if CORS wasn't an issue, the macaroon authentication is complex:</p>
+            <button onclick="showMacaroonComplexity()">Show Macaroon Requirements</button>
+            <div class="warning">
+                <strong>Macaroon Location:</strong> /Users/kyle/.polar/networks/1/volumes/lnd/regtest/admin.macaroon
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>3. TLS Certificate Issues</h2>
+            <p>Self-signed certificates add another layer of complexity:</p>
+            <button onclick="showTLSIssues()">Show TLS Problems</button>
+        </div>
+
+        <div class="demo-section">
+            <h2>📊 Console Output</h2>
+            <div id="output">Ready to demonstrate TAPD integration challenges...\n</div>
+        </div>
+
+        <div class="demo-section">
+            <h2>💡 The Solution</h2>
+            <p>A REST gateway solves these issues by:</p>
+            <ul>
+                <li>✅ Handling CORS headers properly</li>
+                <li>✅ Managing macaroon authentication server-side</li>
+                <li>✅ Dealing with TLS certificates</li>
+                <li>✅ Providing a clean REST API for web developers</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function log(message, isError = false) {
+            const output = document.getElementById('output');
+            const timestamp = new Date().toLocaleTimeString();
+            const prefix = isError ? '❌ ERROR' : '📝 INFO';
+            output.textContent += `[${timestamp}] ${prefix}: ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        async function attemptDirectCall() {
+            log('Attempting direct call to TAPD REST API...');
+            log('URL: https://127.0.0.1:8289/v1/taproot-assets/assets');
+            
+            try {
+                const response = await fetch('https://127.0.0.1:8289/v1/taproot-assets/assets', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                log(`Response status: ${response.status}`);
+                const data = await response.json();
+                log(`Response data: ${JSON.stringify(data, null, 2)}`);
+                
+            } catch (error) {
+                log(`CORS Error (as expected): ${error.message}`, true);
+                log('This is the wall every web developer hits!', true);
+                log('Browser security prevents direct calls to TAPD', true);
+                
+                // Show what the actual error looks like
+                if (error.message.includes('CORS')) {
+                    log('CORS policy blocks cross-origin requests', true);
+                } else if (error.message.includes('net::')) {
+                    log('Network error - likely CORS or TLS certificate issue', true);
+                } else {
+                    log('Unexpected error type', true);
+                }
+            }
+        }
+
+        function showMacaroonComplexity() {
+            log('=== MACAROON AUTHENTICATION COMPLEXITY ===');
+            log('1. Must read binary macaroon file from filesystem');
+            log('2. Convert to hex or base64 encoding');
+            log('3. Add to Grpc-Metadata-macaroon header');
+            log('4. Handle macaroon caveat restrictions');
+            log('');
+            log('Example macaroon header (truncated):');
+            log('Grpc-Metadata-macaroon: 0201036c6e6402f801030a10...');
+            log('');
+            log('This is impossible to do securely in a browser!', true);
+            log('Macaroon files contain sensitive admin credentials', true);
+        }
+
+        function showTLSIssues() {
+            log('=== TLS CERTIFICATE PROBLEMS ===');
+            log('1. TAPD uses self-signed certificates');
+            log('2. Browsers reject self-signed certs by default');
+            log('3. Certificate path: /Users/kyle/.polar/networks/1/volumes/lnd/alice-tap/tls.cert');
+            log('4. Cannot easily import custom CA in web apps');
+            log('');
+            log('Even with --ignore-certificate-errors flag:', true);
+            log('Still blocked by CORS policy', true);
+        }
+
+        // Initialize the demo
+        log('Demo initialized. Click buttons to see TAPD integration challenges.');
+        log('This demonstrates why a REST gateway is essential for web development.');
+    </script>
+</body>
+</html>

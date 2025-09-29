@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 2: Gateway Success!</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .success-banner {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #0a4f3c;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .endpoint-group {
+            margin-bottom: 30px;
+        }
+        .endpoint-group h3 {
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .endpoint-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .endpoint-button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .endpoint-button.success {
+            background: #48bb78;
+        }
+        .endpoint-button.error {
+            background: #f56565;
+        }
+        .response-viewer {
+            background: #1a1a2e;
+            color: #00ff41;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            min-height: 200px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .status-indicator.connected {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        .status-indicator.disconnected {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        .status-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        .status-indicator.connected::before {
+            background: #48bb78;
+        }
+        .status-indicator.disconnected::before {
+            background: #f56565;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .code-snippet {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Part 2: Gateway Connection Success!</h1>
+        
+        <div class="card">
+            <div class="success-banner">
+                ✨ No CORS errors! No macaroon hassles! Just clean REST API calls!
+            </div>
+            
+            <div id="status" class="status-indicator disconnected">
+                Checking gateway connection...
+            </div>
+
+            <div class="endpoint-group">
+                <h3>📊 Asset Operations</h3>
+                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/assets', this)">
+                    List All Assets
+                </button>
+                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/assets', this)">
+                    Asset Balances
+                </button>
+                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/universe/roots', this)">
+                    Universe Roots
+                </button>
+            </div>
+
+            <div class="endpoint-group">
+                <h3>📡 Addresses & Transfers</h3>
+                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/addrs', this)">
+                    List Addresses
+                </button>
+                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/assets/transfers', this)">
+                    Asset Transfers
+                </button>
+            </div>
+
+            <div class="code-snippet">
+                <strong>Try this in your console:</strong><br>
+                fetch('http://localhost:8080/v1/taproot-assets/assets')<br>
+                  .then(r => r.json())<br>
+                  .then(console.log)
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>📡 API Response</h3>
+            <div id="response" class="response-viewer">Ready to make API calls...
+
+Click any button above to see real data from your Taproot Assets node!
+
+Gateway URL: http://localhost:8080
+Status: Waiting for first request...</div>
+        </div>
+    </div>
+
+    <script>
+        const GATEWAY_URL = 'http://localhost:8080';
+        
+        let connectionChecked = false;
+        
+        // Check gateway connection on load
+        async function checkConnection() {
+            const statusEl = document.getElementById('status');
+            try {
+                const response = await fetch(`${GATEWAY_URL}/health`);
+                if (response.ok) {
+                    statusEl.className = 'status-indicator connected';
+                    statusEl.textContent = 'Gateway Connected';
+                    if (!connectionChecked) {
+                        log('🌟 REST Gateway ready! Click any button above to explore the API.');
+                        connectionChecked = true;
+                    }
+                } else {
+                    throw new Error('Gateway not responding');
+                }
+            } catch (error) {
+                statusEl.className = 'status-indicator disconnected';
+                statusEl.textContent = 'Gateway Disconnected';
+                if (!connectionChecked) {
+                    log('❌ Gateway not running. Make sure you completed Part 0 setup.', true);
+                    connectionChecked = true;
+                }
+            }
+        }
+
+        async function callAPI(endpoint, buttonElement) {
+            const responseEl = document.getElementById('response');
+            
+            log(`\n📡 Calling: ${endpoint}\n`);
+            log('⏳ Sending request...\n');
+            
+            try {
+                const response = await fetch(`${GATEWAY_URL}${endpoint}`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    log(`✅ Success! Status: ${response.status}\n`);
+                    log('📦 Response Data:\n');
+                    log(JSON.stringify(data, null, 2));
+                    
+                    // Highlight the success
+                    if (buttonElement) {
+                        buttonElement.classList.add('success');
+                        setTimeout(() => {
+                            buttonElement.classList.remove('success');
+                        }, 1000);
+                    }
+                } else {
+                    log(`❌ Error: ${response.status}\n`, true);
+                    log(JSON.stringify(data, null, 2), true);
+                    
+                    if (buttonElement) {
+                        buttonElement.classList.add('error');
+                        setTimeout(() => {
+                            buttonElement.classList.remove('error');
+                        }, 1000);
+                    }
+                }
+            } catch (error) {
+                log(`\n❌ Network Error: ${error.message}`, true);
+                log('\nMake sure the gateway is running (Part 0 setup)', true);
+            }
+        }
+
+        function log(message, isError = false) {
+            const responseEl = document.getElementById('response');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            if (message.includes('📡 Calling:')) {
+                responseEl.textContent = message;
+            } else {
+                responseEl.textContent += message;
+            }
+            
+            responseEl.scrollTop = responseEl.scrollHeight;
+        }
+
+        // Check connection on load
+        checkConnection();
+        
+        // Recheck every 5 seconds
+        setInterval(checkConnection, 5000);
+    </script>
+</body>
+</html>
