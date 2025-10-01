@@ -12,7 +12,7 @@ Get your development environment ready in 5 minutes.
 
 ```bash
 # Clone the workshop repository
-git clone https://github.com/kwsantiago/taproot-assets-webdev-examples
+git clone https://github.com/privkeyio/taproot-assets-webdev-examples
 cd taproot-assets-webdev-examples
 ```
 
