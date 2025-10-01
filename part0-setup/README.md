@@ -4,13 +4,27 @@ Get your development environment ready in 5 minutes.
 
 ## Prerequisites
 
-✅ **Polar** running with an LND node that has Taproot Assets enabled  
-✅ **Rust** installed (for the gateway)  
-✅ **Git** to clone the gateway repository
+✅ **Polar** running with an LND node that has Taproot Assets enabled
+✅ **Rust** installed (for the gateway)
+✅ **Git** to clone repositories
+
+## Quick Start
+
+```bash
+# Clone the workshop repository
+git clone https://github.com/kwsantiago/taproot-assets-webdev-examples
+cd taproot-assets-webdev-examples
+```
 
 ## Step 1: Clone the REST Gateway
 
+In a **separate directory** (not inside the workshop repo):
+
 ```bash
+# Navigate to your projects folder
+cd ..
+
+# Clone the gateway
 git clone https://github.com/privkeyio/taproot-assets-rest-gateway
 cd taproot-assets-rest-gateway
 ```
