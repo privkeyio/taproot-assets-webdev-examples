@@ -25,22 +25,23 @@ pkill -f "python3 -m http.server" 2>/dev/null
 # Start all demo servers
 echo -e "${BLUE}Starting demo servers...${NC}"
 
-# Get the script directory
+# Get the project root directory (parent of scripts/)
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
 
-(cd "$SCRIPT_DIR/part1-cors-demo" && python3 -m http.server 8000 2>/dev/null) &
+(cd "$PROJECT_ROOT/part1-cors-demo" && python3 -m http.server 8000 2>/dev/null) &
 echo -e "${GREEN}✅ Part 1 (CORS Demo): http://localhost:8000${NC}"
 
-(cd "$SCRIPT_DIR/part2-gateway-connection" && python3 -m http.server 8001 2>/dev/null) &
+(cd "$PROJECT_ROOT/part2-gateway-connection" && python3 -m http.server 8001 2>/dev/null) &
 echo -e "${GREEN}✅ Part 2 (Gateway Connection): http://localhost:8001${NC}"
 
-(cd "$SCRIPT_DIR/part3-starter" && python3 -m http.server 8002 2>/dev/null) &
+(cd "$PROJECT_ROOT/part3-starter" && python3 -m http.server 8002 2>/dev/null) &
 echo -e "${GREEN}✅ Part 3 Starter (Balance Viewer): http://localhost:8002${NC}"
 
-(cd "$SCRIPT_DIR/part3-intermediate" && python3 -m http.server 8003 2>/dev/null) &
+(cd "$PROJECT_ROOT/part3-intermediate" && python3 -m http.server 8003 2>/dev/null) &
 echo -e "${GREEN}✅ Part 3 Intermediate (Send/Receive): http://localhost:8003${NC}"
 
-(cd "$SCRIPT_DIR/part3-advanced" && python3 -m http.server 8004 2>/dev/null) &
+(cd "$PROJECT_ROOT/part3-advanced" && python3 -m http.server 8004 2>/dev/null) &
 echo -e "${GREEN}✅ Part 3 Advanced (Payment Widget): http://localhost:8004/demo.html${NC}"
 
 echo ""
