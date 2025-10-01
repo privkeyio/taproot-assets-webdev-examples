@@ -16,14 +16,9 @@ Your first successful Taproot Assets API calls from a web browser!
 
 ## Run the Demo
 
-```bash
-# From this directory
-python3 -m http.server 8001
-# Or
-npx serve . -p 8001
-```
+If you ran `./scripts/start-workshop.sh` from Part 0, this demo is already running.
 
-Visit: http://localhost:8001
+**Visit:** http://localhost:8001
 
 ## Try These API Calls
 

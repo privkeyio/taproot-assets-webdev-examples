@@ -11,17 +11,11 @@ Experience firsthand why building Taproot Assets web apps is currently impossibl
 
 ## Run the Demo
 
-1. **Open the demo page:**
-```bash
-# From this directory
-python3 -m http.server 8000
-# Or
-npx serve .
-```
+If you ran `./scripts/start-workshop.sh` from Part 0, this demo is already running.
 
-2. **Visit:** http://localhost:8000
+**Visit:** http://localhost:8000
 
-3. **Click the buttons to see:**
+**Click the buttons to see:**
    - Direct API calls fail with CORS errors
    - Macaroon authentication complexity
    - TLS certificate problems

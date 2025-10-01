@@ -12,14 +12,9 @@ A live dashboard that:
 
 ## Run the Application
 
-```bash
-# From this directory
-python3 -m http.server 8002
-# Or
-npx serve . -p 8002
-```
+If you ran `./scripts/start-workshop.sh` from Part 0, this application is already running.
 
-Visit: http://localhost:8002
+**Visit:** http://localhost:8002
 
 ## Features Implemented
 

@@ -62,18 +62,24 @@ Using Cargo (Rust):
 cargo run
 ```
 
-## Step 4: Verify It's Working
+## Step 4: Run All Workshop Demos
 
-Open a new terminal and test:
+Back in the workshop repository:
 
 ```bash
-curl http://localhost:8080/health
+cd ../taproot-assets-webdev-examples
+./scripts/start-workshop.sh
 ```
 
-You should see:
-```json
-{"status": "healthy", "timestamp": "2025-09-17T13:29:34.048190574+00:00"}
+This starts all demo servers on ports 8000-8004.
+
+## Step 5: Verify Everything Works
+
+```bash
+./scripts/verify-workshop.sh
 ```
+
+You should see all services reporting as healthy.
 
 ## ✅ Success!
 
