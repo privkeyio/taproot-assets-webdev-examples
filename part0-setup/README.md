@@ -12,7 +12,7 @@ Get your development environment ready in 5 minutes.
 
 ```bash
 # Clone the workshop repository
-git clone https://github.com/privkeyio/taproot-assets-webdev-examples
+git clone https://github.com/privkeyio/taproot-assets-webdev-examples.git
 cd taproot-assets-webdev-examples
 ```
 
@@ -25,7 +25,7 @@ In a **separate directory** (not inside the workshop repo):
 cd ..
 
 # Clone the gateway
-git clone https://github.com/privkeyio/taproot-assets-rest-gateway
+git clone https://github.com/privkeyio/taproot-assets-rest-gateway.git
 cd taproot-assets-rest-gateway
 ```
 

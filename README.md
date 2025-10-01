@@ -67,7 +67,7 @@ Choose your project based on experience:
 3. **Start the Workshop**
    ```bash
    # Clone and start all demos
-   git clone https://github.com/privkeyio/taproot-assets-webdev-examples
+   git clone https://github.com/privkeyio/taproot-assets-webdev-examples.git
    cd taproot-assets-webdev-examples
    chmod +x ./scripts/start-workshop.sh
    ./scripts/start-workshop.sh
