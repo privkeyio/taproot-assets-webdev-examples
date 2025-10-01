@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taproot Assets Balance Viewer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .app {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-label {
+            color: #718096;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .asset-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .asset-card:hover {
+            border-color: #66a6ff;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 166, 255, 0.3);
+        }
+        .asset-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .asset-name {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2d3748;
+        }
+        .asset-type {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .asset-details {
+            display: grid;
+            gap: 10px;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .detail-label {
+            color: #718096;
+            font-size: 0.9em;
+        }
+        .detail-value {
+            font-weight: 600;
+            color: #2d3748;
+            font-family: 'Courier New', monospace;
+        }
+        .balance-value {
+            font-size: 1.5em;
+            color: #48bb78;
+        }
+        .asset-id {
+            font-size: 0.75em;
+            color: #a0aec0;
+            word-break: break-all;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+        }
+        .refresh-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: white;
+            color: #66a6ff;
+            border: 2px solid #66a6ff;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(102, 166, 255, 0.3);
+            transition: all 0.3s;
+        }
+        .refresh-button:hover {
+            background: #66a6ff;
+            color: white;
+            transform: scale(1.05);
+        }
+        .refresh-button.loading {
+            animation: pulse 1s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .empty-state h2 {
+            color: #718096;
+            margin-bottom: 10px;
+        }
+        .empty-state p {
+            color: #a0aec0;
+        }
+        .last-update {
+            text-align: center;
+            color: white;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            background: #fff5f5;
+            border: 2px solid #feb2b2;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header>
+            <h1>💎 Taproot Assets Portfolio</h1>
+            <p class="subtitle">Real-time balance viewer with auto-refresh</p>
+        </header>
+
+        <div id="lastUpdate" class="last-update">Never updated</div>
+        
+        <div id="errorContainer"></div>
+
+        <div class="stats-row" id="statsRow">
+            <div class="stat-card">
+                <div class="stat-label">Total Assets</div>
+                <div class="stat-value" id="totalAssets">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Value</div>
+                <div class="stat-value" id="totalValue">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Last Block</div>
+                <div class="stat-value" id="lastBlock">0</div>
+            </div>
+        </div>
+
+        <div id="assetsContainer" class="assets-grid"></div>
+
+        <button class="refresh-button" onclick="refreshBalances()">
+            🔄 Refresh Now
+        </button>
+    </div>
+
+    <script>
+        const GATEWAY_URL = 'http://localhost:8080';
+        let autoRefreshInterval;
+
+        async function fetchAssets() {
+            try {
+                const response = await fetch(`${GATEWAY_URL}/v1/taproot-assets/assets`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                return data.assets || [];
+            } catch (error) {
+                showError(`Failed to fetch assets: ${error.message}`);
+                return [];
+            }
+        }
+
+        async function fetchBalances() {
+            // For this demo, we'll derive balances from the assets themselves
+            // since the balance endpoint requires specific parameters
+            try {
+                const response = await fetch(`${GATEWAY_URL}/v1/taproot-assets/assets`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                
+                // Create a balance object from assets
+                const balances = {};
+                if (data.assets) {
+                    data.assets.forEach(asset => {
+                        if (asset.asset_id) {
+                            balances[asset.asset_id] = asset.amount || '0';
+                        }
+                    });
+                }
+                return balances;
+            } catch (error) {
+                showError(`Failed to fetch balances: ${error.message}`);
+                return {};
+            }
+        }
+
+        async function fetchNodeInfo() {
+            // This gateway doesn't proxy LND calls, so we'll use taproot-assets info
+            try {
+                const response = await fetch(`${GATEWAY_URL}/v1/taproot-assets/info`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('Failed to fetch node info:', error);
+                return null;
+            }
+        }
+
+        function formatBalance(balance, decimals = 0) {
+            const num = parseInt(balance);
+            const divisor = Math.pow(10, decimals);
+            const adjustedNum = num / divisor;
+
+            return adjustedNum.toLocaleString(undefined, {
+                minimumFractionDigits: decimals > 0 ? 2 : 0,
+                maximumFractionDigits: decimals > 0 ? 2 : 0
+            });
+        }
+
+        function truncateId(id, length = 16) {
+            if (!id || id.length <= length) return id;
+            return id.substring(0, length / 2) + '...' + id.substring(id.length - length / 2);
+        }
+
+        function renderAssets(assets, balances) {
+            const container = document.getElementById('assetsContainer');
+            
+            if (assets.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h2>No Assets Found</h2>
+                        <p>Create some Taproot Assets to see them here!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = assets.map(asset => {
+                const balance = balances[asset.asset_id] || '0';
+                const assetType = asset.asset_type === 'NORMAL' ? 'Fungible' : 'Collectible';
+                const decimals = asset.decimal_display?.decimal_display || 0;
+                const assetName = asset.asset_genesis?.name || asset.name || 'Unnamed Asset';
+                const genesisHeight = asset.asset_genesis?.genesis_point ?
+                    asset.chain_anchor?.block_height || 'Pending' : 'N/A';
+
+                return `
+                    <div class="asset-card">
+                        <div class="asset-header">
+                            <div class="asset-name">${assetName}</div>
+                            <div class="asset-type">${assetType}</div>
+                        </div>
+                        <div class="asset-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Balance</span>
+                                <span class="detail-value balance-value">${formatBalance(balance, decimals)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Total Supply</span>
+                                <span class="detail-value">${formatBalance(asset.amount, decimals)}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Genesis Block</span>
+                                <span class="detail-value">${genesisHeight}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Decimal Places</span>
+                                <span class="detail-value">${decimals}</span>
+                            </div>
+                        </div>
+                        <div class="asset-id">
+                            ID: ${truncateId(asset.asset_id)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateStats(assets, balances, nodeInfo) {
+            document.getElementById('totalAssets').textContent = assets.length;
+
+            // Calculate total value considering decimals
+            let totalValue = 0;
+            assets.forEach(asset => {
+                const balance = parseInt(balances[asset.asset_id] || 0);
+                const decimals = asset.decimal_display?.decimal_display || 0;
+                totalValue += balance / Math.pow(10, decimals);
+            });
+
+            document.getElementById('totalValue').textContent = totalValue.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            // Find the highest block height from assets
+            let maxBlockHeight = 0;
+            assets.forEach(asset => {
+                const blockHeight = asset.chain_anchor?.block_height || 0;
+                if (blockHeight > maxBlockHeight) {
+                    maxBlockHeight = blockHeight;
+                }
+            });
+            document.getElementById('lastBlock').textContent = maxBlockHeight || 'N/A';
+        }
+
+        function showError(message) {
+            const container = document.getElementById('errorContainer');
+            container.innerHTML = `<div class="error-message">⚠️ ${message}</div>`;
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        async function refreshBalances() {
+            const button = document.querySelector('.refresh-button');
+            button.classList.add('loading');
+            
+            try {
+                const [assets, balances, nodeInfo] = await Promise.all([
+                    fetchAssets(),
+                    fetchBalances(),
+                    fetchNodeInfo()
+                ]);
+                
+                renderAssets(assets, balances);
+                updateStats(assets, balances, nodeInfo);
+                
+                const now = new Date();
+                document.getElementById('lastUpdate').textContent = 
+                    `Last updated: ${now.toLocaleTimeString()}`;
+            } catch (error) {
+                console.error('Refresh error:', error);
+                showError('Failed to refresh data');
+            } finally {
+                button.classList.remove('loading');
+            }
+        }
+
+        // Auto-refresh every 10 seconds
+        function startAutoRefresh() {
+            refreshBalances();
+            autoRefreshInterval = setInterval(refreshBalances, 10000);
+        }
+
+        // Start on page load
+        startAutoRefresh();
+
+        // Clean up on page unload
+        window.addEventListener('beforeunload', () => {
+            if (autoRefreshInterval) {
+                clearInterval(autoRefreshInterval);
+            }
+        });
+    </script>
+</body>
+</html>
