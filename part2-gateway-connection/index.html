@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Part 2: Gateway Success!</title>
+    <title>Part 2: Taproot Assets Workshop</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -13,41 +13,93 @@
             padding: 20px;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1400px;
             margin: 0 auto;
+        }
+        .content-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .right-panel {
+            position: sticky;
+            top: 20px;
+            align-self: start;
         }
         h1 {
             color: white;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             font-size: 2.5em;
+        }
+        .subtitle {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            opacity: 0.95;
         }
         .card {
             background: white;
             border-radius: 12px;
             padding: 25px;
-            margin-bottom: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        .success-banner {
-            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
-            color: #0a4f3c;
+        .warning-banner {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 6px;
             margin-bottom: 20px;
-            font-weight: 600;
-            text-align: center;
+            font-size: 14px;
         }
-        .endpoint-group {
-            margin-bottom: 30px;
+        .setup-banner {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            color: #1565c0;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
         }
-        .endpoint-group h3 {
+        .setup-banner code {
+            background: #1565c0;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .step-group {
+            margin-bottom: 25px;
+        }
+        .step-group h3 {
             color: #333;
             margin-bottom: 15px;
             border-bottom: 2px solid #667eea;
             padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .endpoint-button {
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .button {
             background: #667eea;
             color: white;
             border: none;
@@ -57,17 +109,46 @@
             margin: 5px;
             font-size: 14px;
             transition: all 0.3s;
+            display: inline-block;
         }
-        .endpoint-button:hover {
+        .button:hover {
             background: #5a67d8;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
-        .endpoint-button.success {
-            background: #48bb78;
+        .button.clear {
+            background: #dc3545;
         }
-        .endpoint-button.error {
-            background: #f56565;
+        .input-group {
+            margin: 15px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .input-group input, .input-group textarea, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+        }
+        .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .input-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .input-hint {
+            font-size: 12px;
+            color: #718096;
+            margin-top: 5px;
         }
         .response-viewer {
             background: #1a1a2e;
@@ -76,8 +157,8 @@
             border-radius: 8px;
             font-family: 'Courier New', monospace;
             font-size: 13px;
-            min-height: 200px;
-            max-height: 400px;
+            min-height: 300px;
+            max-height: 600px;
             overflow-y: auto;
             white-space: pre-wrap;
             word-break: break-all;
@@ -117,158 +198,452 @@
             50% { opacity: 0.5; }
             100% { opacity: 1; }
         }
-        .code-snippet {
-            background: #f7fafc;
-            border: 1px solid #e2e8f0;
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 12px;
             border-radius: 6px;
-            padding: 15px;
             margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
+            font-size: 14px;
+            color: #2c5282;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🚀 Part 2: Gateway Connection Success!</h1>
-        
-        <div class="card">
-            <div class="success-banner">
-                ✨ No CORS errors! No macaroon hassles! Just clean REST API calls!
-            </div>
-            
-            <div id="status" class="status-indicator disconnected">
-                Checking gateway connection...
-            </div>
+        <h1>🚀 Part 2: Taproot Assets Workshop</h1>
+        <p class="subtitle">Mint, send, and receive assets using the REST Gateway</p>
 
-            <div class="endpoint-group">
-                <h3>📊 Asset Operations</h3>
-                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/assets', this)">
-                    List All Assets
-                </button>
-                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/assets', this)">
-                    Asset Balances
-                </button>
-                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/universe/roots', this)">
-                    Universe Roots
-                </button>
-            </div>
-
-            <div class="endpoint-group">
-                <h3>📡 Addresses & Transfers</h3>
-                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/addrs', this)">
-                    List Addresses
-                </button>
-                <button class="endpoint-button" onclick="callAPI('/v1/taproot-assets/assets/transfers', this)">
-                    Asset Transfers
-                </button>
-            </div>
-
-            <div class="code-snippet">
-                <strong>Try this in your console:</strong><br>
-                fetch('http://localhost:8080/v1/taproot-assets/assets')<br>
-                  .then(r => r.json())<br>
-                  .then(console.log)
-            </div>
+        <div class="setup-banner">
+            <strong>⚠️ IMPORTANT: Setup Required!</strong><br>
+            1. In Polar: Click LND node (alice) → <strong>Deposit Funds</strong> tab → Amount: <strong>1000000</strong> → Click <strong>Deposit</strong><br>
+            2. In Polar: Click Bitcoin node → Actions → <strong>Auto Mine</strong> → Set to <strong>30 seconds</strong> → Click <strong>Start</strong><br>
+            3. Wait 30-60 seconds for deposit to confirm, then start minting! ✅
         </div>
 
-        <div class="card">
-            <h3>📡 API Response</h3>
-            <div id="response" class="response-viewer">Ready to make API calls...
+        <button onclick="clearConsole()" class="button clear" style="margin-bottom: 20px;">Clear Console</button>
 
-Click any button above to see real data from your Taproot Assets node!
+        <div class="content-wrapper">
+            <div class="left-panel">
+                <!-- Step 1: Verify Setup -->
+                <div class="card">
+                    <div class="step-group">
+                        <h3><span class="step-number">1</span> Verify Gateway Connection</h3>
+                        <div id="status" class="status-indicator disconnected">
+                            Checking gateway connection...
+                        </div>
+                        <p style="margin-bottom: 15px; color: #4a5568;">Ensure the REST Gateway is running:</p>
+                        <button class="button" onclick="checkHealth()">Check Gateway Health</button>
+                        <button class="button" onclick="getTaprootInfo()">Get Taproot Assets Info</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Mint Asset -->
+                <div class="card">
+                    <div class="step-group">
+                        <h3><span class="step-number">2</span> Mint Your First Asset</h3>
+
+                        <div class="input-group">
+                            <label>Asset Type:</label>
+                            <select id="assetType">
+                                <option value="NORMAL">Fungible (NORMAL)</option>
+                                <option value="COLLECTIBLE">Collectible (NFT)</option>
+                            </select>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Asset Name:</label>
+                            <input type="text" id="assetName" placeholder="MyAsset" value="WorkshopCoin">
+                            <div class="input-hint">Choose a unique name for your asset</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Amount:</label>
+                            <input type="number" id="assetAmount" value="1000" min="1">
+                            <div class="input-hint">For collectibles, typically use 1</div>
+                        </div>
+
+                        <button class="button" onclick="mintAsset()">🎨 Mint Asset</button>
+                        <button class="button" onclick="finalizeBatch()">✅ Finalize Batch</button>
+
+                        <div class="info-box">
+                            💡 <strong>Two-step process:</strong><br>
+                            1. Click "Mint Asset" to add to batch<br>
+                            2. Click "Finalize Batch" to commit and broadcast<br>
+                            3. Wait ~30 seconds for Auto Mine to confirm
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: View Assets -->
+                <div class="card">
+                    <div class="step-group">
+                        <h3><span class="step-number">3</span> View Your Assets</h3>
+                        <button class="button" onclick="listBalances()">💰 View Balances</button>
+
+                        <div class="info-box">
+                            💡 Balances are grouped by asset. Multiple UTXOs of the same asset are combined.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Generate Address -->
+                <div class="card">
+                    <div class="step-group">
+                        <h3><span class="step-number">4</span> Generate Receiving Address</h3>
+
+                        <div class="input-group">
+                            <label>Asset ID:</label>
+                            <input type="text" id="addrAssetId" placeholder="Paste asset_id from your minted asset">
+                            <div class="input-hint">Auto-filled from "View Balances"</div>
+                        </div>
+
+                        <div class="input-group">
+                            <label>Amount:</label>
+                            <input type="number" id="addrAmount" placeholder="100" value="100">
+                        </div>
+
+                        <button class="button" onclick="generateAddress()">📍 Generate Address</button>
+                        <button class="button" onclick="listAddresses()">📬 List All Addresses</button>
+
+                        <div class="info-box">
+                            💡 Click "List All Addresses" after generating to see your new address
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 5: Send Asset -->
+                <div class="card">
+                    <div class="step-group">
+                        <h3><span class="step-number">5</span> Send Asset</h3>
+
+                        <div class="input-group">
+                            <label>Taproot Assets Address:</label>
+                            <textarea id="sendAddress" placeholder="tap1q..."></textarea>
+                            <div class="input-hint">Full Taproot Assets address (starts with tap1)</div>
+                        </div>
+
+                        <button class="button" onclick="sendAsset()">🚀 Send Asset</button>
+
+                        <div class="info-box">
+                            💡 If you enabled Auto Mine (30s), wait ~30 seconds. Otherwise mine 6 blocks manually in Polar.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 6: Advanced -->
+                <div class="card">
+                    <div class="step-group">
+                        <h3><span class="step-number">6</span> Advanced Operations</h3>
+                        <button class="button" onclick="listTransfers()">📊 List Transfers</button>
+                        <button class="button" onclick="getUniverseRoots()">🌍 Universe Roots</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="card">
+                    <h3>📡 API Response Console</h3>
+                    <div id="response" class="response-viewer">Welcome to the Taproot Assets Workshop! 🎉
+
+Before using this UI:
+1. In Polar: Deposit 1 BTC to LND node (alice)
+2. In Polar: Enable Auto Mine (30s) for automatic confirmations
+3. Wait 30 seconds for deposit to confirm
+4. Then start here:
+   Step 1: Verify gateway connection
+   Step 2: Mint your first asset
+   Step 3: View your assets
+   Step 4: Generate addresses
+   Step 5: Send assets
 
 Gateway URL: http://localhost:8080
-Status: Waiting for first request...</div>
+Ready to start...</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         const GATEWAY_URL = 'http://localhost:8080';
-        
         let connectionChecked = false;
-        
-        // Check gateway connection on load
+
+        function clearConsole() {
+            document.getElementById('response').textContent = 'Console cleared. Ready for next operation...\n';
+        }
+
+        function log(message) {
+            document.getElementById('response').textContent = message;
+        }
+
+        function appendLog(message) {
+            document.getElementById('response').textContent += message;
+            document.getElementById('response').scrollTop = document.getElementById('response').scrollHeight;
+        }
+
+        // Check gateway connection
         async function checkConnection() {
             const statusEl = document.getElementById('status');
             try {
                 const response = await fetch(`${GATEWAY_URL}/health`);
                 if (response.ok) {
                     statusEl.className = 'status-indicator connected';
-                    statusEl.textContent = 'Gateway Connected';
-                    if (!connectionChecked) {
-                        log('🌟 REST Gateway ready! Click any button above to explore the API.');
-                        connectionChecked = true;
-                    }
+                    statusEl.textContent = '✅ Gateway Connected';
                 } else {
                     throw new Error('Gateway not responding');
                 }
             } catch (error) {
                 statusEl.className = 'status-indicator disconnected';
-                statusEl.textContent = 'Gateway Disconnected';
-                if (!connectionChecked) {
-                    log('❌ Gateway not running. Make sure you completed Part 0 setup.', true);
-                    connectionChecked = true;
-                }
+                statusEl.textContent = '❌ Gateway Disconnected';
             }
         }
 
-        async function callAPI(endpoint, buttonElement) {
-            const responseEl = document.getElementById('response');
-            
-            log(`\n📡 Calling: ${endpoint}\n`);
-            log('⏳ Sending request...\n');
-            
+        async function gatewayCall(endpoint, options = {}) {
+            log(`📡 Calling: ${options.method || 'GET'} ${endpoint}\n\n⏳ Sending request...\n`);
+
             try {
-                const response = await fetch(`${GATEWAY_URL}${endpoint}`);
+                const response = await fetch(`${GATEWAY_URL}${endpoint}`, options);
                 const data = await response.json();
-                
+
                 if (response.ok) {
-                    log(`✅ Success! Status: ${response.status}\n`);
-                    log('📦 Response Data:\n');
-                    log(JSON.stringify(data, null, 2));
-                    
-                    // Highlight the success
-                    if (buttonElement) {
-                        buttonElement.classList.add('success');
-                        setTimeout(() => {
-                            buttonElement.classList.remove('success');
-                        }, 1000);
+                    // Check for error code in response body
+                    if (data.code && data.code !== 0 && data.message) {
+                        appendLog(`❌ Error: ${data.message}\n\n`);
+                        appendLog('📦 Full Response:\n');
+                        appendLog(JSON.stringify(data, null, 2));
+                        return null;
                     }
+
+                    appendLog(`✅ Success! Status: ${response.status}\n\n`);
+                    appendLog('📦 Response Data:\n');
+                    appendLog(JSON.stringify(data, null, 2));
+                    return data;
                 } else {
-                    log(`❌ Error: ${response.status}\n`, true);
-                    log(JSON.stringify(data, null, 2), true);
-                    
-                    if (buttonElement) {
-                        buttonElement.classList.add('error');
-                        setTimeout(() => {
-                            buttonElement.classList.remove('error');
-                        }, 1000);
-                    }
+                    appendLog(`❌ Error: ${response.status}\n\n`);
+                    appendLog(JSON.stringify(data, null, 2));
+                    return null;
                 }
             } catch (error) {
-                log(`\n❌ Network Error: ${error.message}`, true);
-                log('\nMake sure the gateway is running (Part 0 setup)', true);
+                appendLog(`\n❌ Network Error: ${error.message}\n`);
+                appendLog('\nMake sure the gateway is running!');
+                return null;
             }
         }
 
-        function log(message, isError = false) {
-            const responseEl = document.getElementById('response');
-            const timestamp = new Date().toLocaleTimeString();
-            
-            if (message.includes('📡 Calling:')) {
-                responseEl.textContent = message;
-            } else {
-                responseEl.textContent += message;
+        // Step 1: Verify
+        async function checkHealth() {
+            await gatewayCall('/health');
+        }
+
+        async function getTaprootInfo() {
+            await gatewayCall('/v1/taproot-assets/getinfo');
+        }
+
+        // Step 2: Mint Asset
+        async function mintAsset() {
+            const assetType = document.getElementById('assetType').value;
+            const name = document.getElementById('assetName').value;
+            const amount = document.getElementById('assetAmount').value;
+
+            if (!name) {
+                log('❌ Please enter an asset name');
+                return;
             }
-            
-            responseEl.scrollTop = responseEl.scrollHeight;
+
+            const mintRequest = {
+                asset: {
+                    asset_type: assetType,
+                    name: name,
+                    amount: amount
+                },
+                short_response: true
+            };
+
+            const result = await gatewayCall('/v1/taproot-assets/assets', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(mintRequest)
+            });
+
+            if (result) {
+                appendLog('\n\n🎯 Asset added to batch!');
+                appendLog('\n💡 NEXT STEP: Click "Finalize Batch" to commit the minting transaction.');
+            }
+        }
+
+        // Finalize Batch
+        async function finalizeBatch() {
+            const result = await gatewayCall('/v1/taproot-assets/assets/mint/finalize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    short_response: true,
+                    fee_rate: 1000  // sat/kw
+                })
+            });
+
+            if (result) {
+                appendLog('\n\n🎯 Batch finalized and broadcast!');
+                appendLog('\n💡 Wait ~30 seconds for Auto Mine to confirm, then check "List All Assets".');
+            }
+        }
+
+        // Step 3: View Assets
+        async function listBalances() {
+            const data = await gatewayCall('/v1/taproot-assets/assets/utxos');
+
+            if (data && data.managed_utxos) {
+                const utxos = Object.values(data.managed_utxos);
+
+                if (utxos.length === 0) {
+                    appendLog('\n\nNo assets found. Mint an asset first!');
+                    return;
+                }
+
+                appendLog('\n\n💰 ASSET BALANCES:\n');
+
+                // Group assets by asset_id and sum amounts
+                const assetMap = new Map();
+                let utxoCount = 0;
+
+                utxos.forEach(utxo => {
+                    utxo.assets.forEach(asset => {
+                        utxoCount++;
+                        const genesis = asset.asset_genesis;
+                        const assetId = genesis.asset_id;
+
+                        if (assetMap.has(assetId)) {
+                            const existing = assetMap.get(assetId);
+                            existing.amount += parseInt(asset.amount);
+                        } else {
+                            assetMap.set(assetId, {
+                                name: genesis.name,
+                                amount: parseInt(asset.amount),
+                                type: genesis.asset_type,
+                                assetId: assetId
+                            });
+                        }
+                    });
+                });
+
+                // Display grouped balances
+                let index = 1;
+                let grandTotal = 0;
+                let firstAssetId = null;
+                for (const [assetId, info] of assetMap) {
+                    if (index === 1) firstAssetId = assetId;
+                    appendLog(`\n${index}. ${info.name}`);
+                    appendLog(`\n   Balance: ${info.amount}`);
+                    appendLog(`\n   Type: ${info.type}`);
+                    appendLog(`\n   Asset ID: ${info.assetId.substring(0, 20)}...`);
+                    appendLog(` 📋 [Click to use in Step 4]`);
+                    grandTotal += info.amount;
+                    index++;
+                }
+
+                appendLog(`\n\n📊 Total: ${grandTotal} units across ${assetMap.size} asset(s) in ${utxoCount} UTXO(s)`);
+
+                // Auto-populate first asset ID for convenience
+                if (firstAssetId) {
+                    document.getElementById('addrAssetId').value = firstAssetId;
+                    appendLog('\n\n✨ Auto-filled first asset ID in Step 4 - ready to generate address!');
+                }
+            } else {
+                appendLog('\n\nNo assets found. Mint an asset first!');
+            }
+        }
+
+        async function listAddresses() {
+            const data = await gatewayCall('/v1/taproot-assets/addrs');
+
+            if (data && data.addrs) {
+                if (data.addrs.length === 0) {
+                    appendLog('\n\n📭 No addresses generated yet.');
+                    appendLog('\n💡 Use Step 4 to generate a receiving address!');
+                } else {
+                    appendLog(`\n\n📬 TAPROOT ASSETS ADDRESSES (${data.addrs.length}):\n`);
+                    data.addrs.forEach((addr, idx) => {
+                        appendLog(`\n${idx + 1}. ${addr.encoded || addr.addr || 'Address'}`);
+                        if (addr.asset_id) {
+                            appendLog(`\n   Asset ID: ${addr.asset_id.substring(0, 20)}...`);
+                        }
+                        if (addr.amount) {
+                            appendLog(`\n   Amount: ${addr.amount}`);
+                        }
+                    });
+                }
+            }
+        }
+
+        // Step 4: Generate Address
+        async function generateAddress() {
+            const assetId = document.getElementById('addrAssetId').value.trim();
+            const amount = document.getElementById('addrAmount').value;
+
+            if (!assetId) {
+                log('❌ Please enter an asset ID');
+                return;
+            }
+
+            const addrRequest = {
+                asset_id: assetId,
+                amt: amount || '0'
+            };
+
+            const result = await gatewayCall('/v1/taproot-assets/addrs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(addrRequest)
+            });
+
+            if (result && result.encoded) {
+                appendLog('\n\n✅ Address generated successfully!');
+                appendLog(`\n📍 Address: ${result.encoded}`);
+
+                // Auto-populate send address field for easy testing
+                document.getElementById('sendAddress').value = result.encoded;
+                appendLog('\n\n✨ Auto-filled address in Step 5 - ready to send!');
+                appendLog('\n💡 This allows you to test sending to yourself within the same node.');
+            }
+        }
+
+        // Step 5: Send Asset
+        async function sendAsset() {
+            const address = document.getElementById('sendAddress').value.trim();
+
+            if (!address) {
+                log('❌ Please enter a Taproot Assets address');
+                return;
+            }
+
+            const sendRequest = {
+                tap_addrs: [address]
+            };
+
+            const result = await gatewayCall('/v1/taproot-assets/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(sendRequest)
+            });
+
+            if (result) {
+                appendLog('\n\n🎯 Asset minting initiated!');
+                appendLog('\n💡 If Auto Mine is enabled, wait ~30 seconds for confirmation.');
+                appendLog('\nOtherwise, manually mine 6 blocks in Polar.');
+            }
+        }
+
+        // Step 6: Advanced
+        async function listTransfers() {
+            await gatewayCall('/v1/taproot-assets/assets/transfers');
+        }
+
+        async function getUniverseRoots() {
+            await gatewayCall('/v1/taproot-assets/universe/roots');
         }
 
         // Check connection on load
         checkConnection();
-        
-        // Recheck every 5 seconds
         setInterval(checkConnection, 5000);
     </script>
 </body>

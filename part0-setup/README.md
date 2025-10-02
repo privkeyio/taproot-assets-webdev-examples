@@ -43,7 +43,7 @@ Edit `.env` with your Polar node details:
 # Your Polar TAPD node details
 TAPROOT_ASSETS_HOST=127.0.0.1:8289
 
-# Find these in Polar (right-click node → "Connect" → "File Paths")
+# Find these in Polar (click node → "Connect" → "File Paths")
 TAPD_MACAROON_PATH=/home/yourname/.polar/networks/3/volumes/tapd/alice-tap/data/regtest/admin.macaroon
 LND_MACAROON_PATH=/home/yourname/.polar/networks/3/volumes/lnd/alice/data/chain/bitcoin/regtest/admin.macaroon
 

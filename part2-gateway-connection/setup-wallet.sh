@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Part 2 Workshop Setup Script
+# Simple guide to fund your LND wallet using Polar UI
+
+echo "🚀 Part 2: Taproot Assets Workshop Setup"
+echo "=========================================="
+echo ""
+echo "📋 SETUP STEPS - Follow these in Polar:"
+echo ""
+echo "1️⃣  Fund Your LND Wallet"
+echo "   - Click your LND node (alice)"
+echo "   - Click 'Deposit Funds' tab"
+echo "   - Amount: 1000000"
+echo "   - Click 'Deposit' button"
+echo "   ✅ Polar will automatically mine blocks and confirm"
+echo ""
+echo "2️⃣  Enable Auto Mining (Recommended)"
+echo "   - Click Bitcoin node (backend1)"
+echo "   - Click 'Actions' → 'Auto Mine'"
+echo "   - Set interval: 30 seconds"
+echo "   - Click 'Start'"
+echo ""
+echo "3️⃣  Wait 30-60 seconds for deposit to confirm"
+echo ""
+echo "✅ You're ready! Open the workshop:"
+echo "   http://localhost:8001"
+echo ""
+echo "=========================================="
+echo ""

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taproot Assets Balance Viewer</title>
+    <title>Part 3: Taproot Assets Portfolio</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -187,9 +187,11 @@
 <body>
     <div class="app">
         <header>
-            <h1>💎 Taproot Assets Portfolio</h1>
+            <h1>💎 Part 3: Taproot Assets Portfolio</h1>
             <p class="subtitle">Real-time balance viewer with auto-refresh</p>
         </header>
+
+        <button onclick="clearAll()" style="background: #dc3545; color: white; border: none; padding: 12px 20px; border-radius: 8px; cursor: pointer; margin-bottom: 20px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3); transition: all 0.3s;">Clear Part 3</button>
 
         <div id="lastUpdate" class="last-update">Never updated</div>
         
@@ -220,6 +222,15 @@
     <script>
         const GATEWAY_URL = 'http://localhost:8080';
         let autoRefreshInterval;
+
+        function clearAll() {
+            document.getElementById('assetsContainer').innerHTML = '';
+            document.getElementById('totalAssets').textContent = '0';
+            document.getElementById('totalValue').textContent = '0';
+            document.getElementById('lastBlock').textContent = '0';
+            document.getElementById('lastUpdate').textContent = 'Never updated';
+            document.getElementById('errorContainer').innerHTML = '';
+        }
 
         async function fetchAssets() {
             try {

@@ -1,4 +1,4 @@
-# Part 3 Starter: Asset Balance Viewer
+# Part 3: Taproot Assets Portfolio
 
 Build your first Taproot Assets application - a real-time portfolio viewer.
 
