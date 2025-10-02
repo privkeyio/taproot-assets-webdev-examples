@@ -260,7 +260,7 @@
         async function fetchNodeInfo() {
             // This gateway doesn't proxy LND calls, so we'll use taproot-assets info
             try {
-                const response = await fetch(`${GATEWAY_URL}/v1/taproot-assets/info`);
+                const response = await fetch(`${GATEWAY_URL}/v1/taproot-assets/getinfo`);
                 if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
                 const data = await response.json();
                 return data;
@@ -288,7 +288,7 @@
 
         function renderAssets(assets, balances) {
             const container = document.getElementById('assetsContainer');
-            
+
             if (assets.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
@@ -299,8 +299,26 @@
                 return;
             }
 
-            container.innerHTML = assets.map(asset => {
-                const balance = balances[asset.asset_id] || '0';
+            // Group assets by asset_id and aggregate balances
+            const groupedAssets = {};
+            assets.forEach(asset => {
+                const assetId = asset.asset_id;
+                if (!groupedAssets[assetId]) {
+                    groupedAssets[assetId] = {
+                        ...asset,
+                        totalAmount: 0,
+                        utxoCount: 0
+                    };
+                }
+                groupedAssets[assetId].totalAmount += parseInt(asset.amount || 0);
+                groupedAssets[assetId].utxoCount += 1;
+            });
+
+            // Convert to array and render
+            const uniqueAssets = Object.values(groupedAssets);
+
+            container.innerHTML = uniqueAssets.map(asset => {
+                const balance = asset.totalAmount.toString();
                 const assetType = asset.asset_type === 'NORMAL' ? 'Fungible' : 'Collectible';
                 const decimals = asset.decimal_display?.decimal_display || 0;
                 const assetName = asset.asset_genesis?.name || asset.name || 'Unnamed Asset';
@@ -319,8 +337,8 @@
                                 <span class="detail-value balance-value">${formatBalance(balance, decimals)}</span>
                             </div>
                             <div class="detail-row">
-                                <span class="detail-label">Total Supply</span>
-                                <span class="detail-value">${formatBalance(asset.amount, decimals)}</span>
+                                <span class="detail-label">UTXOs</span>
+                                <span class="detail-value">${asset.utxoCount}</span>
                             </div>
                             <div class="detail-row">
                                 <span class="detail-label">Genesis Block</span>
@@ -340,14 +358,26 @@
         }
 
         function updateStats(assets, balances, nodeInfo) {
-            document.getElementById('totalAssets').textContent = assets.length;
+            // Count unique assets by asset_id
+            const uniqueAssets = new Set(assets.map(a => a.asset_id));
+            document.getElementById('totalAssets').textContent = uniqueAssets.size;
 
-            // Calculate total value considering decimals
-            let totalValue = 0;
+            // Calculate total value considering decimals and grouping by asset_id
+            const groupedAssets = {};
             assets.forEach(asset => {
-                const balance = parseInt(balances[asset.asset_id] || 0);
-                const decimals = asset.decimal_display?.decimal_display || 0;
-                totalValue += balance / Math.pow(10, decimals);
+                const assetId = asset.asset_id;
+                if (!groupedAssets[assetId]) {
+                    groupedAssets[assetId] = {
+                        totalAmount: 0,
+                        decimals: asset.decimal_display?.decimal_display || 0
+                    };
+                }
+                groupedAssets[assetId].totalAmount += parseInt(asset.amount || 0);
+            });
+
+            let totalValue = 0;
+            Object.values(groupedAssets).forEach(asset => {
+                totalValue += asset.totalAmount / Math.pow(10, asset.decimals);
             });
 
             document.getElementById('totalValue').textContent = totalValue.toLocaleString(undefined, {
