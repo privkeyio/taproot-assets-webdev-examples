@@ -29,6 +29,9 @@ echo -e "${BLUE}Starting demo servers...${NC}"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
 
+(cd "$PROJECT_ROOT/part0-setup" && python3 -m http.server 8999 2>/dev/null) &
+echo -e "${GREEN}✅ Part 0 (Setup Guide): http://localhost:8999${NC}"
+
 (cd "$PROJECT_ROOT/part1-cors-demo" && python3 -m http.server 8000 2>/dev/null) &
 echo -e "${GREEN}✅ Part 1 (CORS Demo): http://localhost:8000${NC}"
 

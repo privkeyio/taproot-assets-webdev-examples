@@ -106,13 +106,81 @@
             overflow-y: auto;
             white-space: pre-wrap;
         }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 10px;
+        }
+        .nav-button {
+            background: white;
+            color: #667eea;
+            border: 2px solid white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-button:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+        .subtitle {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        .info-banner {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .info-banner h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .info-banner ul {
+            margin: 10px 0 10px 20px;
+        }
+        .info-banner li {
+            margin: 5px 0;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🌐 Part 1: CORS & Authentication Demo</h1>
+        <h1>🌐 Part 1: Feel the Pain</h1>
+        <p class="subtitle">CORS & Authentication Barriers</p>
 
-        <button onclick="clearConsole()" style="background-color: #dc3545; margin-bottom: 20px;">Clear Part 1</button>
+        <div class="navigation">
+            <a href="http://localhost:8999" class="nav-button">← Back to Part 0</a>
+            <a href="http://localhost:8001" class="nav-button">Next: Part 2 →</a>
+        </div>
+
+        <div class="info-banner">
+            <h3>🎯 What You'll Learn</h3>
+            <ul>
+                <li>Why browsers block direct TAPD connections</li>
+                <li>How CORS policies prevent API calls</li>
+                <li>The complexity of macaroon authentication</li>
+                <li>Why TLS certificates cause issues</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>The Error You'll See:</strong></p>
+            <code style="display: block; background: #f4f4f4; padding: 10px; border-radius: 4px; margin-top: 5px;">
+                Access to fetch at 'https://127.0.0.1:8289/v1/taproot-assets/assets' from origin 'http://localhost:8000' has been blocked by CORS policy
+            </code>
+        </div>
+
+        <button onclick="clearConsole()" style="background-color: #dc3545; margin-bottom: 20px;">Clear Console</button>
 
         <div class="warning">
             <strong>⚠️ This demo shows why web developers struggle with TAPD integration</strong><br>

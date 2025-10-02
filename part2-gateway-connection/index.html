@@ -214,11 +214,29 @@
         <h1>🚀 Part 2: Taproot Assets Workshop</h1>
         <p class="subtitle">Mint, send, and receive assets using the REST Gateway</p>
 
+        <div style="display: flex; justify-content: space-between; margin: 20px 0; gap: 10px;">
+            <a href="http://localhost:8000" style="background: white; color: #667eea; border: 2px solid white; padding: 12px 24px; border-radius: 6px; font-size: 16px; font-weight: 600; text-decoration: none; display: inline-block;">← Back to Part 1</a>
+            <a href="http://localhost:8002" style="background: white; color: #667eea; border: 2px solid white; padding: 12px 24px; border-radius: 6px; font-size: 16px; font-weight: 600; text-decoration: none; display: inline-block;">Next: Part 3 →</a>
+        </div>
+
         <div class="setup-banner">
             <strong>⚠️ IMPORTANT: Setup Required!</strong><br>
             1. In Polar: Click LND node (alice) → <strong>Deposit Funds</strong> tab → Amount: <strong>1000000</strong> → Click <strong>Deposit</strong><br>
             2. In Polar: Click Bitcoin node → Actions → <strong>Auto Mine</strong> → Set to <strong>30 seconds</strong> → Click <strong>Start</strong><br>
             3. Wait 30-60 seconds for deposit to confirm, then start minting! ✅
+        </div>
+
+        <div class="card" style="margin-bottom: 20px;">
+            <h3 style="color: #667eea; margin-bottom: 15px;">📚 Workshop Overview</h3>
+            <p style="margin-bottom: 10px;">Complete asset lifecycle in one UI:</p>
+            <ul style="margin-left: 20px;">
+                <li><strong>Step 1:</strong> Verify gateway is running</li>
+                <li><strong>Step 2:</strong> Mint your first asset (two-step: batch → finalize)</li>
+                <li><strong>Step 3:</strong> View balances (grouped by asset)</li>
+                <li><strong>Step 4:</strong> Generate receiving address (auto-filled!)</li>
+                <li><strong>Step 5:</strong> Send assets (test by sending to yourself)</li>
+                <li><strong>Step 6:</strong> Advanced operations (transfers, universe)</li>
+            </ul>
         </div>
 
         <button onclick="clearConsole()" class="button clear" style="margin-bottom: 20px;">Clear Console</button>

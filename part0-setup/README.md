@@ -2,6 +2,8 @@
 
 Get your development environment ready in 5 minutes.
 
+> **💡 Prefer a visual guide?** Visit **http://localhost:8999** after running the workshop script for an interactive setup walkthrough!
+
 ## Prerequisites
 
 ✅ **Polar** running with an LND node that has Taproot Assets enabled
@@ -103,4 +105,10 @@ The gateway handles:
 - Try: `chmod 644 /path/to/admin.macaroon`
 
 ---
-Ready? Proceed to [Part 1](../part1-cors-demo) to see why this gateway is necessary!
+
+## Next Steps
+
+Ready? Proceed to:
+- **Interactive Guide:** [http://localhost:8999](http://localhost:8999) (recommended)
+- **Part 1 Demo:** [http://localhost:8000](http://localhost:8000) to see why this gateway is necessary!
+- **Text Guide:** [Part 1 README](../part1-cors-demo/README.md) (fallback)

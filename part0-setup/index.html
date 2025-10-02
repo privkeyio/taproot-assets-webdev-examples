@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 0: REST Gateway Setup</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        .navigation {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .nav-button {
+            background: white;
+            color: #667eea;
+            border: 2px solid white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-button:hover {
+            background: rgba(255,255,255,0.9);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .prereq-list {
+            display: grid;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .prereq-item {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #48bb78;
+        }
+        .prereq-item.required {
+            border-left-color: #f5576c;
+        }
+        .code-block {
+            background: #1a1a2e;
+            color: #00ff41;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            margin: 15px 0;
+            white-space: pre-line;
+        }
+        .instruction-box {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .instruction-box ol {
+            margin: 10px 0 10px 20px;
+        }
+        .instruction-box li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        .download-link {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+        .download-link:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+        }
+        .docs-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .docs-link:hover {
+            text-decoration: underline;
+        }
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            color: #1565c0;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+        }
+        .button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        .button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        .button.secondary {
+            background: #6c757d;
+        }
+        .button.secondary:hover {
+            background: #5a6268;
+        }
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .status-indicator.checking {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .status-indicator.connected {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+        .status-indicator.disconnected {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+        .status-indicator::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        .status-indicator.checking::before {
+            background: #2196f3;
+            animation: pulse 2s infinite;
+        }
+        .status-indicator.connected::before {
+            background: #48bb78;
+        }
+        .status-indicator.disconnected::before {
+            background: #f56565;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        ul {
+            margin-left: 20px;
+        }
+        li {
+            margin: 8px 0;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+        }
+        .os-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .os-button {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        .os-button:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+        .os-button.active {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+        .os-content {
+            display: none;
+        }
+        .os-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚙️ Part 0: REST Gateway Setup</h1>
+        <p class="subtitle">Get your development environment ready in 5 minutes</p>
+
+        <div class="navigation">
+            <a href="http://localhost:8000" class="nav-button">Next: Part 1 →</a>
+        </div>
+
+        <!-- Status Card -->
+        <div class="card">
+            <h2>🔍 Gateway Status</h2>
+            <div id="status" class="status-indicator checking">
+                Checking gateway connection...
+            </div>
+            <button class="button" onclick="checkGatewayHealth()">Check Gateway</button>
+            <div id="statusDetails" style="margin-top: 15px;"></div>
+        </div>
+
+        <!-- Prerequisites -->
+        <div class="card">
+            <h2><span class="step-number">1</span>Install Prerequisites</h2>
+            <p style="margin-bottom: 15px;">Select your operating system:</p>
+
+            <div class="os-selector">
+                <div class="os-button" onclick="selectOS('windows')">
+                    🪟 Windows
+                </div>
+                <div class="os-button" onclick="selectOS('macos')">
+                    🍎 macOS
+                </div>
+                <div class="os-button" onclick="selectOS('linux')">
+                    🐧 Linux
+                </div>
+            </div>
+
+            <div id="os-windows" class="os-content">
+                <h3 style="color: #667eea; margin-bottom: 10px;">🪟 Windows Setup</h3>
+
+                <p style="margin: 10px 0;"><strong>1. Install Git</strong></p>
+                <div class="code-block">Download from https://git-scm.com/download/win
+Run installer with default options</div>
+
+                <p style="margin: 10px 0;"><strong>2. Install Rust</strong></p>
+                <div class="code-block">Download from https://rustup.rs
+Run rustup-init.exe
+Follow prompts (press 1 for default installation)
+Restart your terminal after installation</div>
+
+                <p style="margin: 10px 0;"><strong>3. Install Python 3</strong></p>
+                <div class="code-block">Download from https://www.python.org/downloads/
+Run installer
+✅ CHECK "Add Python to PATH"
+Click "Install Now"</div>
+
+                <p style="margin: 10px 0;"><strong>4. Install Polar</strong></p>
+                <a href="https://lightningpolar.com" target="_blank" class="download-link">📥 Download Polar for Windows</a>
+                <div class="instruction-box">
+                    <ol>
+                        <li>Run the installer and follow the setup wizard</li>
+                        <li>Launch Polar from your Start Menu</li>
+                        <li>Click <strong>"Create Network"</strong></li>
+                        <li>Add nodes from the left sidebar:
+                            <ul>
+                                <li><strong>Bitcoin Core</strong> (backend1)</li>
+                                <li><strong>LND</strong> node (alice)</li>
+                                <li><strong>tapd</strong> node (alice-tap)</li>
+                            </ul>
+                        </li>
+                        <li>Connect <strong>tapd</strong> node to the <strong>LND</strong> node (drag connector)</li>
+                        <li>Click <strong>"Start"</strong> to launch the network</li>
+                    </ol>
+                    <p style="margin-top: 10px;">📖 Need help? Visit <a href="https://lightningpolar.com/" target="_blank" class="docs-link">lightningpolar.com</a></p>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Verifying Installation:</strong>
+                    <div class="code-block" style="margin-top: 10px;">git --version
+cargo --version
+python --version</div>
+                </div>
+            </div>
+
+            <div id="os-macos" class="os-content">
+                <h3 style="color: #667eea; margin-bottom: 10px;">🍎 macOS Setup</h3>
+
+                <p style="margin: 10px 0;"><strong>1. Install Homebrew (if not already installed)</strong></p>
+                <div class="code-block">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</div>
+
+                <p style="margin: 10px 0;"><strong>2. Install Git</strong></p>
+                <div class="code-block">brew install git</div>
+
+                <p style="margin: 10px 0;"><strong>3. Install Rust</strong></p>
+                <div class="code-block">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# Press 1 for default installation
+source "$HOME/.cargo/env"</div>
+
+                <p style="margin: 10px 0;"><strong>4. Install Python 3</strong></p>
+                <div class="code-block">brew install python3</div>
+
+                <p style="margin: 10px 0;"><strong>5. Install Polar</strong></p>
+                <a href="https://lightningpolar.com" target="_blank" class="download-link">📥 Download Polar for macOS</a>
+                <div class="instruction-box">
+                    <ol>
+                        <li>Open the downloaded <code>.dmg</code> file</li>
+                        <li>Drag Polar to your Applications folder</li>
+                        <li>Launch Polar from Applications</li>
+                        <li>Click <strong>"Create Network"</strong></li>
+                        <li>Add nodes from the left sidebar:
+                            <ul>
+                                <li><strong>Bitcoin Core</strong> (backend1)</li>
+                                <li><strong>LND</strong> node (alice)</li>
+                                <li><strong>tapd</strong> node (alice-tap)</li>
+                            </ul>
+                        </li>
+                        <li>Connect <strong>tapd</strong> node to the <strong>LND</strong> node (drag connector)</li>
+                        <li>Click <strong>"Start"</strong> to launch the network</li>
+                    </ol>
+                    <p style="margin-top: 10px;">📖 Need help? Visit <a href="https://lightningpolar.com/" target="_blank" class="docs-link">lightningpolar.com</a></p>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Verifying Installation:</strong>
+                    <div class="code-block" style="margin-top: 10px;">git --version
+cargo --version
+python3 --version</div>
+                </div>
+            </div>
+
+            <div id="os-linux" class="os-content">
+                <h3 style="color: #667eea; margin-bottom: 10px;">🐧 Linux (Ubuntu/Debian) Setup</h3>
+
+                <p style="margin: 10px 0;"><strong>1. Update package manager</strong></p>
+                <div class="code-block">sudo apt update</div>
+
+                <p style="margin: 10px 0;"><strong>2. Install Git</strong></p>
+                <div class="code-block">sudo apt install git -y</div>
+
+                <p style="margin: 10px 0;"><strong>3. Install Rust</strong></p>
+                <div class="code-block">curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+# Press 1 for default installation
+source "$HOME/.cargo/env"</div>
+
+                <p style="margin: 10px 0;"><strong>4. Install Python 3</strong></p>
+                <div class="code-block">sudo apt install python3 python3-pip -y</div>
+
+                <p style="margin: 10px 0;"><strong>5. Install Polar</strong></p>
+                <a href="https://lightningpolar.com" target="_blank" class="download-link">📥 Download Polar AppImage for Linux</a>
+                <div class="instruction-box">
+                    <p><strong>Download and launch:</strong></p>
+                    <div class="code-block" style="margin: 10px 0;">chmod +x Polar-linux-*.AppImage
+./Polar-linux-*.AppImage</div>
+                    <p><strong>Setup your network:</strong></p>
+                    <ol>
+                        <li>Click <strong>"Create Network"</strong></li>
+                        <li>Add nodes from the left sidebar:
+                            <ul>
+                                <li><strong>Bitcoin Core</strong> (backend1)</li>
+                                <li><strong>LND</strong> node (alice)</li>
+                                <li><strong>tapd</strong> node (alice-tap)</li>
+                            </ul>
+                        </li>
+                        <li>Connect <strong>tapd</strong> node to the <strong>LND</strong> node (drag connector)</li>
+                        <li>Click <strong>"Start"</strong> to launch the network</li>
+                    </ol>
+                    <p style="margin-top: 10px;">📖 Need help? Visit <a href="https://lightningpolar.com/" target="_blank" class="docs-link">lightningpolar.com</a></p>
+                </div>
+
+                <div class="info-box">
+                    <strong>💡 Verifying Installation:</strong>
+                    <div class="code-block" style="margin-top: 10px;">git --version
+cargo --version
+python3 --version</div>
+                </div>
+            </div>
+
+            <div class="success-box">
+                <strong>✅ Checklist - You should have:</strong>
+                <ul style="margin: 10px 0 0 20px;">
+                    <li>Git installed and accessible from terminal</li>
+                    <li>Rust/Cargo installed (rustup)</li>
+                    <li>Python 3 installed</li>
+                    <li>Polar installed with a network running</li>
+                    <li>LND node (alice) with Taproot Assets enabled</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 1: Clone Gateway -->
+        <div class="card">
+            <h2><span class="step-number">2</span>Clone the REST Gateway</h2>
+            <p style="margin-bottom: 15px;">In a <strong>separate directory</strong> (not inside the workshop repo):</p>
+            <div class="code-block"># Navigate to your projects folder
+cd ~/Projects  # or ~/Documents/GitHub or wherever you keep projects
+
+git clone https://github.com/privkeyio/taproot-assets-rest-gateway.git
+cd taproot-assets-rest-gateway</div>
+        </div>
+
+        <!-- Step 2: Configure Environment -->
+        <div class="card">
+            <h2><span class="step-number">3</span>Configure Your Environment</h2>
+            <p style="margin-bottom: 15px;">Create and edit your <code>.env</code> file:</p>
+            <div class="code-block">cp .env.example .env
+nano .env  # or use your preferred editor</div>
+
+            <div class="warning-box">
+                <strong>⚠️ Important:</strong> Update these paths to match your Polar setup!
+            </div>
+
+            <p style="margin: 15px 0;"><strong>Example .env configuration:</strong></p>
+            <div class="code-block"># Your Polar TAPD node details
+TAPROOT_ASSETS_HOST=127.0.0.1:8289
+
+# Find these in Polar (click node → "Connect" → "File Paths")
+TAPD_MACAROON_PATH=/home/yourname/.polar/networks/1/volumes/tapd/alice-tap/data/regtest/admin.macaroon
+LND_MACAROON_PATH=/home/yourname/.polar/networks/1/volumes/lnd/alice/data/chain/bitcoin/regtest/admin.macaroon
+
+# For development with self-signed certificates
+TLS_VERIFY=false
+
+# Gateway settings
+SERVER_ADDRESS=127.0.0.1:8080
+CORS_ORIGINS=http://localhost:8999,http://localhost:8000,http://localhost:8001,http://localhost:8002,http://localhost:8003,http://localhost:8004</div>
+
+            <div class="info-box">
+                <strong>💡 Tip:</strong> In Polar, click your node → "Connect" tab → "File Paths" section to find the exact macaroon paths for your system.
+            </div>
+        </div>
+
+        <!-- Step 3: Start Gateway -->
+        <div class="card">
+            <h2><span class="step-number">4</span>Start the Gateway</h2>
+            <p style="margin-bottom: 15px;">Using Cargo (Rust):</p>
+            <div class="code-block">cargo run</div>
+
+            <p style="margin: 15px 0;">You should see output like:</p>
+            <div class="code-block">🚀 Starting Taproot Assets REST Gateway
+✅ Connected to TAPD at 127.0.0.1:8289
+🌐 Server running at http://127.0.0.1:8080</div>
+
+            <div class="success-box">
+                <strong>✅ Success!</strong> Your gateway is now running at <code>http://localhost:8080</code>
+            </div>
+        </div>
+
+        <!-- Step 4: Start Workshop -->
+        <div class="card">
+            <h2><span class="step-number">5</span>Run All Workshop Demos</h2>
+            <p style="margin-bottom: 15px;">Navigate back to the workshop repository and start the demos:</p>
+            <div class="code-block"># Go back to the workshop folder
+cd /path/to/taproot-assets-webdev-examples
+
+# Start all workshop demos
+./scripts/start-workshop.sh</div>
+
+            <p style="margin: 15px 0;">This starts all demo servers:</p>
+            <ul>
+                <li>Part 0 (Setup): <a href="http://localhost:8999">http://localhost:8999</a></li>
+                <li>Part 1 (CORS Demo): <a href="http://localhost:8000">http://localhost:8000</a></li>
+                <li>Part 2 (Workshop): <a href="http://localhost:8001">http://localhost:8001</a></li>
+                <li>Part 3 (Portfolio): <a href="http://localhost:8002">http://localhost:8002</a></li>
+            </ul>
+        </div>
+
+        <!-- What the Gateway Does -->
+        <div class="card">
+            <h2>🎯 What the Gateway Solves</h2>
+            <p style="margin-bottom: 15px;">The REST Gateway handles these critical issues for web developers:</p>
+            <ul>
+                <li><strong>✅ CORS headers</strong> - Automatically added to all responses</li>
+                <li><strong>✅ Macaroon authentication</strong> - Handled server-side securely</li>
+                <li><strong>✅ TLS certificates</strong> - Validates or bypasses self-signed certs</li>
+                <li><strong>✅ Clean REST API</strong> - Simple fetch() calls from the browser</li>
+            </ul>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="card">
+            <h2>🔧 Troubleshooting</h2>
+
+            <p style="margin: 15px 0;"><strong>Gateway can't connect?</strong></p>
+            <ul>
+                <li>Check your Polar network is running</li>
+                <li>Verify the paths in <code>.env</code> are correct</li>
+                <li>Make sure ports 8289 (tapd) and 8080 (gateway) are accessible</li>
+            </ul>
+
+            <p style="margin: 15px 0;"><strong>Permission denied on macaroon?</strong></p>
+            <ul>
+                <li>The process needs read access to your Polar files</li>
+                <li>Try: <code>chmod 644 /path/to/admin.macaroon</code></li>
+            </ul>
+
+            <p style="margin: 15px 0;"><strong>Port already in use?</strong></p>
+            <ul>
+                <li>Change <code>SERVER_ADDRESS</code> in <code>.env</code> to use a different port</li>
+                <li>Update CORS origins to match the new port</li>
+            </ul>
+        </div>
+
+        <div class="navigation" style="justify-content: flex-end; margin-top: 30px;">
+            <a href="http://localhost:8000" class="nav-button">Ready? Start Part 1 →</a>
+        </div>
+    </div>
+
+    <script>
+        const GATEWAY_URL = 'http://localhost:8080';
+
+        // OS Selection
+        function selectOS(os) {
+            // Remove active class from all buttons and content
+            document.querySelectorAll('.os-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.os-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Add active class to selected button and content
+            event.target.classList.add('active');
+            document.getElementById(`os-${os}`).classList.add('active');
+        }
+
+        // Auto-detect OS on page load
+        function detectOS() {
+            const platform = navigator.platform.toLowerCase();
+            const userAgent = navigator.userAgent.toLowerCase();
+
+            let detectedOS = 'linux'; // default
+
+            if (platform.includes('win') || userAgent.includes('windows')) {
+                detectedOS = 'windows';
+            } else if (platform.includes('mac') || userAgent.includes('mac')) {
+                detectedOS = 'macos';
+            }
+
+            // Find and activate the detected OS button
+            const buttons = document.querySelectorAll('.os-button');
+            buttons.forEach(btn => {
+                if (btn.textContent.toLowerCase().includes(detectedOS === 'macos' ? 'macos' : detectedOS)) {
+                    btn.classList.add('active');
+                }
+            });
+
+            // Show the detected OS content
+            document.getElementById(`os-${detectedOS}`).classList.add('active');
+        }
+
+        async function checkGatewayHealth() {
+            const statusEl = document.getElementById('status');
+            const detailsEl = document.getElementById('statusDetails');
+
+            statusEl.className = 'status-indicator checking';
+            statusEl.textContent = 'Checking gateway connection...';
+            detailsEl.innerHTML = '';
+
+            try {
+                const response = await fetch(`${GATEWAY_URL}/health`);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    statusEl.className = 'status-indicator connected';
+                    statusEl.textContent = '✅ Gateway Connected';
+
+                    detailsEl.innerHTML = `
+                        <div class="success-box">
+                            <strong>Gateway is running!</strong><br>
+                            Response: <code>${JSON.stringify(data)}</code><br><br>
+                            You're ready to proceed to Part 1!
+                        </div>
+                    `;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                statusEl.className = 'status-indicator disconnected';
+                statusEl.textContent = '❌ Gateway Disconnected';
+
+                detailsEl.innerHTML = `
+                    <div class="warning-box">
+                        <strong>Cannot connect to gateway</strong><br>
+                        Error: ${error.message}<br><br>
+                        <strong>Make sure:</strong><br>
+                        1. You've cloned the gateway repository<br>
+                        2. You've configured the .env file<br>
+                        3. You've run <code>cargo run</code> in the gateway directory<br>
+                        4. Your Polar network is running
+                    </div>
+                `;
+            }
+        }
+
+        // Initialize on page load
+        detectOS();
+        checkGatewayHealth();
+    </script>
+</body>
+</html>
