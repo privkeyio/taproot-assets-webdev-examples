@@ -29,23 +29,16 @@ echo -e "${BLUE}Starting demo servers...${NC}"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$( cd "$SCRIPT_DIR/.." && pwd )"
 
-(cd "$PROJECT_ROOT/part0-setup" && python3 -m http.server 8999 2>/dev/null) &
-echo -e "${GREEN}✅ Part 0 (Setup Guide): http://localhost:8999${NC}"
-
-(cd "$PROJECT_ROOT/part1-cors-demo" && python3 -m http.server 8000 2>/dev/null) &
-echo -e "${GREEN}✅ Part 1 (CORS Demo): http://localhost:8000${NC}"
-
-(cd "$PROJECT_ROOT/part2-gateway-connection" && python3 -m http.server 8001 2>/dev/null) &
-echo -e "${GREEN}✅ Part 2 (Gateway Connection): http://localhost:8001${NC}"
-
-(cd "$PROJECT_ROOT/part3-starter" && python3 -m http.server 8002 2>/dev/null) &
-echo -e "${GREEN}✅ Part 3 Starter (Balance Viewer): http://localhost:8002${NC}"
-
-(cd "$PROJECT_ROOT/part3-intermediate" && python3 -m http.server 8003 2>/dev/null) &
-echo -e "${GREEN}✅ Part 3 Intermediate (Send/Receive): http://localhost:8003${NC}"
-
-(cd "$PROJECT_ROOT/part3-advanced" && python3 -m http.server 8004 2>/dev/null) &
-echo -e "${GREEN}✅ Part 3 Advanced (Payment Widget): http://localhost:8004/demo.html${NC}"
+# Serve from project root so assets are accessible and all parts on same server
+(cd "$PROJECT_ROOT" && python3 -m http.server 8999 2>/dev/null) &
+echo -e "${GREEN}✅ Workshop Server: http://localhost:8999${NC}"
+echo ""
+echo -e "  ${BLUE}Part 0 (Setup Guide):${NC} http://localhost:8999/part0-setup/"
+echo -e "  ${BLUE}Part 1 (CORS Demo):${NC} http://localhost:8999/part1-cors-demo/"
+echo -e "  ${BLUE}Part 2 (Gateway):${NC} http://localhost:8999/part2-gateway-connection/"
+echo -e "  ${BLUE}Part 3 Starter:${NC} http://localhost:8999/part3-starter/"
+echo -e "  ${BLUE}Part 3 Intermediate:${NC} http://localhost:8999/part3-intermediate/"
+echo -e "  ${BLUE}Part 3 Advanced:${NC} http://localhost:8999/part3-advanced/demo.html"
 
 echo ""
 echo "================================================"

@@ -13,7 +13,15 @@ cd taproot-assets-webdev-examples
 ./scripts/start-workshop.sh
 ```
 
-Then visit **http://localhost:8999** to begin!
+Then visit **http://localhost:8999/part0-setup/** to begin!
+
+**All workshop parts run on one server (port 8999):**
+- Part 0: http://localhost:8999/part0-setup/
+- Part 1: http://localhost:8999/part1-cors-demo/
+- Part 2: http://localhost:8999/part2-gateway-connection/
+- Part 3: http://localhost:8999/part3-starter/
+
+Navigate seamlessly between parts using the built-in navigation buttons!
 
 ---
 
@@ -64,4 +72,4 @@ Found a bug? Have an improvement? Contributions are welcome!
 
 **Built with ❤️ by Kyle Santiago / PrivKey**
 
-Ready? Run `./scripts/start-workshop.sh` and visit **http://localhost:8999**
+Ready? Run `./scripts/start-workshop.sh` and visit **http://localhost:8999/part0-setup/**

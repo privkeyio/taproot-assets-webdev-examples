@@ -8,13 +8,35 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #000000;
+            background-image: url('assets/skyline.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 0;
         }
         .container {
             max-width: 1400px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .logo {
+            display: block;
+            max-width: 400px;
+            margin: 0 auto 30px;
         }
         .content-wrapper {
             display: grid;
@@ -39,63 +61,74 @@
             font-size: 2.5em;
         }
         .demo-section {
-            background: white;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             margin-bottom: 20px;
         }
         .demo-section h2 {
-            color: #333;
+            color: #ffffff;
             margin-bottom: 15px;
-            border-bottom: 2px solid #667eea;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
             padding-bottom: 10px;
         }
+        .demo-section p, .demo-section ul, .demo-section li {
+            color: #d0d0d0;
+        }
         .error {
-            background-color: #ffe6e6;
+            background-color: rgba(255, 68, 68, 0.1);
             border-left: 4px solid #ff4444;
             padding: 10px;
             margin: 10px 0;
+            color: #ffb3b3;
         }
         .warning {
-            background-color: #fff3cd;
+            background-color: rgba(255, 193, 7, 0.1);
             border-left: 4px solid #ffc107;
             padding: 10px;
             margin: 10px 0;
+            color: #ffecb3;
         }
         button {
-            background: #667eea;
-            color: white;
-            border: none;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000000;
+            border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 12px 20px;
             border-radius: 6px;
             cursor: pointer;
             margin: 5px;
             font-size: 14px;
+            font-weight: 600;
             transition: all 0.3s;
         }
         button:hover {
-            background: #5a67d8;
+            background: #ffffff;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
         }
         code {
-            background-color: #f4f4f4;
-            padding: 2px 4px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 6px;
             border-radius: 3px;
             font-family: 'Courier New', monospace;
+            color: #00ff41;
+            border: 1px solid rgba(0, 255, 65, 0.2);
         }
         .code-block {
-            background-color: #f4f4f4;
+            background: rgba(0, 0, 0, 0.7);
+            color: #00ff41;
             padding: 15px;
             border-radius: 5px;
             margin: 10px 0;
             white-space: pre-wrap;
             font-family: 'Courier New', monospace;
             font-size: 14px;
+            border: 1px solid rgba(0, 255, 65, 0.3);
         }
         #output {
-            background: #1a1a2e;
+            background: rgba(0, 0, 0, 0.9);
             color: #00ff41;
             padding: 20px;
             border-radius: 8px;
@@ -105,6 +138,7 @@
             max-height: 600px;
             overflow-y: auto;
             white-space: pre-wrap;
+            border: 1px solid rgba(0, 255, 65, 0.3);
         }
         .navigation {
             display: flex;
@@ -138,14 +172,15 @@
             opacity: 0.95;
         }
         .info-banner {
-            background: white;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             margin-bottom: 20px;
         }
         .info-banner h3 {
-            color: #667eea;
+            color: #ffffff;
             margin-bottom: 15px;
         }
         .info-banner ul {
@@ -153,17 +188,22 @@
         }
         .info-banner li {
             margin: 5px 0;
+            color: #d0d0d0;
+        }
+        .info-banner p {
+            color: #d0d0d0;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <img src="assets/privkey-logo.png" alt="PrivKey LLC" class="logo">
         <h1>🌐 Part 1: Feel the Pain</h1>
         <p class="subtitle">CORS & Authentication Barriers</p>
 
         <div class="navigation">
-            <a href="http://localhost:8999" class="nav-button">← Back to Part 0</a>
-            <a href="http://localhost:8001" class="nav-button">Next: Part 2 →</a>
+            <a href="/part0-setup/" class="nav-button">← Back to Part 0</a>
+            <a href="/part2-gateway-connection/" class="nav-button">Next: Part 2 →</a>
         </div>
 
         <div class="info-banner">
@@ -238,8 +278,8 @@ Click any button to see the issues web developers face.</div>
         </div>
 
         <div class="navigation" style="margin-top: 30px;">
-            <a href="http://localhost:8999" class="nav-button">← Back to Part 0</a>
-            <a href="http://localhost:8001" class="nav-button">Next: Part 2 →</a>
+            <a href="/part0-setup/" class="nav-button">← Back to Part 0</a>
+            <a href="/part2-gateway-connection/" class="nav-button">Next: Part 2 →</a>
         </div>
     </div>
 

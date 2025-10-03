@@ -8,13 +8,35 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            background: #000000;
+            background-image: url('assets/skyline.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             min-height: 100vh;
             padding: 20px;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 0;
         }
         .app {
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .logo {
+            display: block;
+            max-width: 400px;
+            margin: 0 auto 30px;
         }
         header {
             text-align: center;
@@ -37,17 +59,19 @@
             margin-bottom: 30px;
         }
         .stat-card {
-            background: white;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             transition: transform 0.3s;
         }
         .stat-card:hover {
             transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
         }
         .stat-label {
-            color: #718096;
+            color: #a0a0a0;
             font-size: 0.9em;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -56,7 +80,7 @@
         .stat-value {
             font-size: 2em;
             font-weight: bold;
-            color: #2d3748;
+            color: #ffffff;
         }
         .assets-grid {
             display: grid;
@@ -64,17 +88,17 @@
             gap: 20px;
         }
         .asset-card {
-            background: white;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             transition: all 0.3s;
-            border: 2px solid transparent;
         }
         .asset-card:hover {
-            border-color: #66a6ff;
+            border-color: rgba(255, 255, 255, 0.5);
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(102, 166, 255, 0.3);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
         }
         .asset-header {
             display: flex;
@@ -82,16 +106,16 @@
             align-items: center;
             margin-bottom: 15px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #f0f0f0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
         }
         .asset-name {
             font-size: 1.3em;
             font-weight: bold;
-            color: #2d3748;
+            color: #ffffff;
         }
         .asset-type {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000000;
             padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.85em;
@@ -107,43 +131,42 @@
             align-items: center;
         }
         .detail-label {
-            color: #718096;
+            color: #a0a0a0;
             font-size: 0.9em;
         }
         .detail-value {
             font-weight: 600;
-            color: #2d3748;
+            color: #ffffff;
             font-family: 'Courier New', monospace;
         }
         .balance-value {
             font-size: 1.5em;
-            color: #48bb78;
+            color: #00ff41;
         }
         .asset-id {
             font-size: 0.75em;
-            color: #a0aec0;
+            color: #808080;
             word-break: break-all;
             margin-top: 10px;
             padding-top: 10px;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
         .refresh-button {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            background: white;
-            color: #66a6ff;
-            border: 2px solid #66a6ff;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000000;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             padding: 15px 25px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
-            box-shadow: 0 4px 15px rgba(102, 166, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
             transition: all 0.3s;
         }
         .refresh-button:hover {
-            background: #66a6ff;
-            color: white;
+            background: #ffffff;
             transform: scale(1.05);
         }
         .refresh-button.loading {
@@ -157,16 +180,17 @@
         .empty-state {
             text-align: center;
             padding: 60px 20px;
-            background: white;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
         .empty-state h2 {
-            color: #718096;
+            color: #ffffff;
             margin-bottom: 10px;
         }
         .empty-state p {
-            color: #a0aec0;
+            color: #a0a0a0;
         }
         .last-update {
             text-align: center;
@@ -175,9 +199,9 @@
             margin-bottom: 20px;
         }
         .error-message {
-            background: #fff5f5;
-            border: 2px solid #feb2b2;
-            color: #c53030;
+            background: rgba(255, 68, 68, 0.1);
+            border: 2px solid #ff4444;
+            color: #ffb3b3;
             padding: 15px;
             border-radius: 8px;
             margin-bottom: 20px;
@@ -189,9 +213,9 @@
             gap: 10px;
         }
         .nav-button {
-            background: white;
-            color: #66a6ff;
-            border: 2px solid white;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000000;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             padding: 12px 24px;
             border-radius: 6px;
             cursor: pointer;
@@ -202,20 +226,24 @@
             display: inline-block;
         }
         .nav-button:hover {
-            background: rgba(255,255,255,0.9);
+            background: #ffffff;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
         }
         .info-card {
-            background: white;
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
             margin-bottom: 20px;
         }
         .info-card h3 {
-            color: #66a6ff;
+            color: #ffffff;
             margin-bottom: 15px;
+        }
+        .info-card p, .info-card ul, .info-card li {
+            color: #d0d0d0;
         }
         .info-card ul {
             margin-left: 20px;
@@ -227,13 +255,14 @@
 </head>
 <body>
     <div class="app">
+        <img src="assets/privkey-logo.png" alt="PrivKey LLC" class="logo">
         <header>
             <h1>💎 Part 3: Taproot Assets Portfolio</h1>
             <p class="subtitle">Real-time balance viewer with auto-refresh</p>
         </header>
 
         <div class="navigation">
-            <a href="http://localhost:8001" class="nav-button">← Back to Part 2</a>
+            <a href="/part2-gateway-connection/" class="nav-button">← Back to Part 2</a>
             <a href="#" class="nav-button" style="opacity: 0.5; pointer-events: none;">End of Workshop ✅</a>
         </div>
 
@@ -283,7 +312,7 @@
         </button>
 
         <div class="navigation" style="justify-content: space-between; margin-top: 30px;">
-            <a href="http://localhost:8001" class="nav-button">← Back to Part 2</a>
+            <a href="/part2-gateway-connection/" class="nav-button">← Back to Part 2</a>
             <a href="#" class="nav-button" style="opacity: 0.5; pointer-events: none;">End of Workshop ✅</a>
         </div>
     </div>
