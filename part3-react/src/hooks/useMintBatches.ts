@@ -27,7 +27,6 @@ export function useMintBatches() {
       }
 
       const data = await response.json();
-      console.log('[useMintBatches] Fetched batches:', data.batches);
       setBatches(data.batches || []);
       setError(null);
     } catch (err) {
@@ -40,7 +39,6 @@ export function useMintBatches() {
 
   const mintAsset = async (assetType: 'NORMAL' | 'COLLECTIBLE', name: string, amount: string, metadata?: string) => {
     try {
-      console.log('[useMintBatches] Minting asset:', { assetType, name, amount, metadata });
       const response = await fetch(`${GATEWAY_URL}/v1/taproot-assets/assets`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -60,7 +58,6 @@ export function useMintBatches() {
       }
 
       const result = await response.json();
-      console.log('[useMintBatches] Mint response:', result);
       await fetchBatches();
       return result;
     } catch (err) {
@@ -100,11 +97,8 @@ export function useMintBatches() {
       // fee_rate is required by the API, default to 1000 sat/kw
       const safeFeeRate = feeRate && feeRate >= 253 ? feeRate : 1000;
 
-      console.log('[useMintBatches] Current batches:', batches);
-
       // Check if there's a funded batch (has batch_psbt)
       const fundedBatch = batches.find(b => b.batch_psbt);
-      console.log('[useMintBatches] Funded batch found:', fundedBatch);
 
       const requestBody: any = {
         short_response: true
@@ -115,8 +109,6 @@ export function useMintBatches() {
         requestBody.fee_rate = safeFeeRate;
       }
 
-      console.log('[useMintBatches] Finalizing with body:', requestBody);
-
       const response = await fetch(`${GATEWAY_URL}/v1/taproot-assets/assets/mint/finalize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -124,7 +116,6 @@ export function useMintBatches() {
       });
 
       const result = await response.json();
-      console.log('[useMintBatches] Finalize response:', { ok: response.ok, status: response.status, result });
 
       if (!response.ok) {
         throw new Error(result.message || `Finalize batch failed: ${response.statusText}`);
@@ -133,7 +124,6 @@ export function useMintBatches() {
       await fetchBatches();
       return result;
     } catch (err) {
-      console.error('[useMintBatches] Error finalizing batch:', err);
       throw err;
     }
   };

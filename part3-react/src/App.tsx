@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import * as React from 'react';
 import { useTaprootAssets } from './hooks/useTaprootAssets';
 import { AssetCard } from './components/AssetCard';
 import { ConnectionStatus } from './components/ConnectionStatus';
@@ -19,6 +20,14 @@ function App() {
   const [sendAmount, setSendAmount] = useState('');
   const [receiveAmount, setReceiveAmount] = useState('');
   const [generatedAddress, setGeneratedAddress] = useState('');
+  const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+
+  // Update last update time when assets change
+  React.useEffect(() => {
+    if (assets.length > 0 && !loading) {
+      setLastUpdate(new Date());
+    }
+  }, [assets, loading]);
 
   // Group assets by asset_id
   const groupedAssets = (() => {
@@ -26,10 +35,10 @@ function App() {
     assets.forEach((asset) => {
       const assetId = asset.asset_id || asset.asset_genesis?.asset_id || '';
       if (!map.has(assetId)) {
-        const totalAmount = assets
-          .filter(a => (a.asset_id || a.asset_genesis?.asset_id) === assetId)
-          .reduce((sum, a) => sum + parseInt(a.amount || '0'), 0);
-        map.set(assetId, { ...asset, totalAmount });
+        const matchingAssets = assets.filter(a => (a.asset_id || a.asset_genesis?.asset_id) === assetId);
+        const totalAmount = matchingAssets.reduce((sum, a) => sum + parseInt(a.amount || '0'), 0);
+        const utxoCount = matchingAssets.length;
+        map.set(assetId, { ...asset, totalAmount, utxoCount });
       }
     });
     return Array.from(map.values());
@@ -102,50 +111,146 @@ function App() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', padding: '20px' }}>
-      <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-        <img
-          src="/privkey-logo.png"
-          alt="PrivKey LLC"
-          style={{ display: 'block', maxWidth: '300px', margin: '0 auto 20px' }}
-        />
+    <div style={{ minHeight: '100vh', padding: '20px', position: 'relative', zIndex: 1 }}>
+      <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        {/* Animated Logo */}
+        <div style={{ textAlign: 'center', marginBottom: '30px', animation: 'fadeIn 0.8s ease-out' }}>
+          <img
+            src="/privkey-logo.png"
+            alt="PrivKey LLC"
+            style={{
+              display: 'inline-block',
+              maxWidth: '320px',
+              filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.5))',
+              transition: 'transform 0.3s ease',
+              cursor: 'pointer'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+          />
+        </div>
 
-        <h1 style={{ color: 'white', textAlign: 'center', fontSize: '2.5em', marginBottom: '10px' }}>
-          💎 Taproot Assets Suite
-        </h1>
-        <p style={{ color: 'rgba(255,255,255,0.8)', textAlign: 'center', marginBottom: '30px', fontSize: '16px' }}>
-          Comprehensive React + TypeScript integration with REST Gateway
-        </p>
+        {/* Hero Section */}
+        <div style={{ textAlign: 'center', marginBottom: '40px', animation: 'fadeIn 1s ease-out' }}>
+          <h1 style={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            fontSize: '3.5em',
+            fontWeight: '800',
+            marginBottom: '15px',
+            letterSpacing: '-0.02em'
+          }}>
+            💎 Taproot Assets Suite
+          </h1>
+          <p style={{
+            color: 'rgba(255,255,255,0.7)',
+            fontSize: '18px',
+            maxWidth: '700px',
+            margin: '0 auto',
+            lineHeight: '1.6'
+          }}>
+            Full-featured React + TypeScript demo showcasing the complete power of{' '}
+            <span style={{
+              color: '#00ff41',
+              fontWeight: '600',
+              textShadow: '0 0 10px rgba(0,255,65,0.3)'
+            }}>
+              taproot-assets-rest-gateway
+            </span>
+          </p>
+        </div>
 
         {/* Stats Dashboard */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '30px' }}>
-          <div style={{ background: 'rgba(26, 26, 46, 0.95)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', padding: '20px', textAlign: 'center' }}>
-            <div style={{ color: '#a0a0a0', fontSize: '0.9em', marginBottom: '5px' }}>TOTAL ASSETS</div>
-            <div style={{ color: '#ffffff', fontSize: '2em', fontWeight: 'bold' }}>{totalAssets}</div>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '20px',
+          marginBottom: '40px',
+          animation: 'fadeIn 1.2s ease-out'
+        }}>
+          <div style={{
+            background: 'rgba(26, 26, 46, 0.8)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '16px',
+            padding: '28px',
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.borderColor = 'rgba(102, 126, 234, 0.5)';
+            e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
+          >
+            <div style={{ fontSize: '3em', marginBottom: '10px', filter: 'drop-shadow(0 5px 15px rgba(102, 126, 234, 0.3))' }}>📦</div>
+            <div style={{ color: '#a0a0a0', fontSize: '0.85em', marginBottom: '8px', letterSpacing: '1px', fontWeight: '500' }}>TOTAL ASSETS</div>
+            <div style={{ color: '#ffffff', fontSize: '2.5em', fontWeight: '800' }}>{totalAssets}</div>
           </div>
-          <div style={{ background: 'rgba(26, 26, 46, 0.95)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', padding: '20px', textAlign: 'center' }}>
-            <div style={{ color: '#a0a0a0', fontSize: '0.9em', marginBottom: '5px' }}>TOTAL UNITS</div>
-            <div style={{ color: '#00ff41', fontSize: '2em', fontWeight: 'bold' }}>{totalValue.toLocaleString()}</div>
-          </div>
-          <div style={{ background: 'rgba(26, 26, 46, 0.95)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', padding: '20px', textAlign: 'center' }}>
-            <div style={{ color: '#a0a0a0', fontSize: '0.9em', marginBottom: '5px' }}>CONNECTION</div>
-            <div style={{ color: connected ? '#00ff41' : '#ff4444', fontSize: '2em', fontWeight: 'bold' }}>
-              {connected ? '●' : '○'}
-            </div>
+
+          <div style={{
+            background: 'rgba(26, 26, 46, 0.8)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
+            borderRadius: '16px',
+            padding: '28px',
+            textAlign: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+            transition: 'all 0.3s ease',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.transform = 'translateY(-5px)';
+            e.currentTarget.style.borderColor = 'rgba(0, 255, 65, 0.5)';
+            e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.3)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+            e.currentTarget.style.boxShadow = 'none';
+          }}
+          >
+            <div style={{ fontSize: '3em', marginBottom: '10px', filter: 'drop-shadow(0 5px 15px rgba(0, 255, 65, 0.3))' }}>💰</div>
+            <div style={{ color: '#a0a0a0', fontSize: '0.85em', marginBottom: '8px', letterSpacing: '1px', fontWeight: '500' }}>TOTAL UNITS</div>
+            <div style={{
+              color: '#00ff41',
+              fontSize: '2.5em',
+              fontWeight: '800',
+              textShadow: '0 0 20px rgba(0, 255, 65, 0.4)'
+            }}>{totalValue.toLocaleString()}</div>
           </div>
         </div>
 
         {/* Main Card */}
-        <div style={{ background: 'rgba(26, 26, 46, 0.95)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', padding: '30px', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)' }}>
+        <div style={{
+          background: 'rgba(26, 26, 46, 0.8)',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          borderRadius: '24px',
+          padding: '40px',
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          animation: 'fadeIn 1.4s ease-out'
+        }}>
           <ConnectionStatus connected={connected} error={error} />
 
           {/* Tabs */}
           <div style={{
             display: 'flex',
-            gap: '8px',
-            marginBottom: '30px',
-            borderBottom: '2px solid rgba(255,255,255,0.1)',
-            paddingBottom: '10px',
+            gap: '12px',
+            marginBottom: '35px',
+            borderBottom: '2px solid rgba(255,255,255,0.08)',
+            paddingBottom: '12px',
             overflowX: 'auto',
             scrollbarWidth: 'thin'
           }}>
@@ -154,17 +259,33 @@ function App() {
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 style={{
-                  background: activeTab === tab ? 'rgba(255, 255, 255, 0.2)' : 'transparent',
+                  background: activeTab === tab
+                    ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%)'
+                    : 'transparent',
                   color: activeTab === tab ? '#ffffff' : '#a0a0a0',
-                  border: 'none',
-                  padding: '12px 20px',
-                  borderRadius: '8px',
+                  border: activeTab === tab ? '1px solid rgba(102, 126, 234, 0.5)' : '1px solid transparent',
+                  padding: '14px 24px',
+                  borderRadius: '12px',
                   cursor: 'pointer',
-                  fontSize: '14px',
+                  fontSize: '15px',
                   fontWeight: '600',
-                  transition: 'all 0.3s',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   whiteSpace: 'nowrap',
-                  flexShrink: 0
+                  flexShrink: 0,
+                  position: 'relative',
+                  overflow: 'hidden'
+                }}
+                onMouseEnter={(e) => {
+                  if (activeTab !== tab) {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                    e.currentTarget.style.color = '#ffffff';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeTab !== tab) {
+                    e.currentTarget.style.background = 'transparent';
+                    e.currentTarget.style.color = '#a0a0a0';
+                  }
                 }}
               >
                 {tab === 'portfolio' && '📊 Portfolio'}
@@ -181,59 +302,105 @@ function App() {
           {/* Portfolio Tab */}
           {activeTab === 'portfolio' && (
             <div>
+              {/* Last Updated & Search Bar */}
+              {lastUpdate && (
+                <div style={{
+                  textAlign: 'center',
+                  color: 'rgba(255, 255, 255, 0.6)',
+                  fontSize: '13px',
+                  marginBottom: '15px',
+                  fontWeight: '500'
+                }}>
+                  Last updated: {lastUpdate.toLocaleTimeString()} • Auto-refresh every 10s
+                </div>
+              )}
+
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', gap: '10px' }}>
                 <input
                   type="text"
-                  placeholder="🔍 Search assets..."
+                  placeholder="🔍 Search assets by name or ID..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   style={{
                     flex: 1,
-                    padding: '12px',
+                    padding: '14px 18px',
                     background: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.1)',
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     color: '#ffffff',
-                    fontSize: '14px'
+                    fontSize: '14px',
+                    transition: 'all 0.3s ease'
                   }}
                 />
                 <button
-                  onClick={refresh}
+                  onClick={() => {
+                    refresh();
+                    setLastUpdate(new Date());
+                  }}
                   disabled={loading}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.9)',
-                    color: '#000000',
+                    background: loading
+                      ? 'rgba(255, 255, 255, 0.5)'
+                      : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    color: '#ffffff',
                     border: 'none',
-                    padding: '12px 24px',
-                    borderRadius: '8px',
+                    padding: '14px 32px',
+                    borderRadius: '12px',
                     cursor: loading ? 'not-allowed' : 'pointer',
                     opacity: loading ? 0.6 : 1,
                     fontSize: '14px',
-                    fontWeight: '600'
+                    fontWeight: '700',
+                    boxShadow: loading ? 'none' : '0 4px 15px rgba(102, 126, 234, 0.4)',
+                    transition: 'all 0.3s ease',
+                    whiteSpace: 'nowrap'
                   }}
                 >
-                  {loading ? '⟳ Refreshing...' : '🔄 Refresh'}
+                  {loading ? '⟳ Refreshing...' : '🔄 Refresh Now'}
                 </button>
               </div>
 
               {loading && assets.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '60px', color: '#a0a0a0' }}>
-                  <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
-                  Loading assets...
+                <div style={{ textAlign: 'center', padding: '80px', color: '#a0a0a0' }}>
+                  <div style={{
+                    fontSize: '64px',
+                    marginBottom: '20px',
+                    animation: 'pulse 1.5s ease-in-out infinite'
+                  }}>⏳</div>
+                  <div style={{ fontSize: '18px', fontWeight: '500' }}>Loading assets...</div>
                 </div>
               ) : filteredAssets.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '60px', background: 'rgba(255, 255, 255, 0.05)', borderRadius: '12px', color: '#a0a0a0' }}>
-                  <div style={{ fontSize: '48px', marginBottom: '20px' }}>💎</div>
-                  <h3 style={{ color: '#ffffff', marginBottom: '10px' }}>No assets found</h3>
-                  <p>Create some assets in Part 2 to see them here!</p>
+                <div style={{
+                  textAlign: 'center',
+                  padding: '80px 40px',
+                  background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)',
+                  borderRadius: '20px',
+                  border: '2px dashed rgba(255, 255, 255, 0.1)',
+                  color: '#a0a0a0'
+                }}>
+                  <div style={{
+                    fontSize: '72px',
+                    marginBottom: '20px',
+                    filter: 'drop-shadow(0 10px 30px rgba(102, 126, 234, 0.3))',
+                    animation: 'float 3s ease-in-out infinite'
+                  }}>💎</div>
+                  <h3 style={{
+                    color: '#ffffff',
+                    marginBottom: '15px',
+                    fontSize: '24px',
+                    fontWeight: '700'
+                  }}>No assets found</h3>
+                  <p style={{ fontSize: '16px', maxWidth: '400px', margin: '0 auto' }}>
+                    Start by minting your first asset in the Mint tab, or connect to a wallet with existing assets!
+                  </p>
                 </div>
               ) : (
-                <div style={{ display: 'grid', gap: '15px' }}>
+                <div style={{ display: 'grid', gap: '20px', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))' }}>
                   {filteredAssets.map((asset, index) => (
                     <AssetCard
                       key={`${asset.asset_id}-${index}`}
                       asset={asset}
                       balance={asset.totalAmount?.toString()}
+                      utxoCount={asset.utxoCount}
                     />
                   ))}
                 </div>
@@ -453,15 +620,82 @@ function App() {
           {activeTab === 'network' && <NetworkStats />}
         </div>
 
-        <div style={{ textAlign: 'center', marginTop: '30px', color: 'rgba(255, 255, 255, 0.7)', fontSize: '14px' }}>
-          <div style={{ marginBottom: '10px' }}>
-            Built with React + TypeScript + Bun + Vite
+        {/* Footer */}
+        <div style={{
+          textAlign: 'center',
+          marginTop: '50px',
+          padding: '30px',
+          background: 'rgba(26, 26, 46, 0.5)',
+          backdropFilter: 'blur(10px)',
+          borderRadius: '20px',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          animation: 'fadeIn 1.6s ease-out'
+        }}>
+          <div style={{
+            fontSize: '16px',
+            fontWeight: '600',
+            marginBottom: '15px',
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}>
+            ⚡ Built with Modern Stack
           </div>
-          <div style={{ fontSize: '12px' }}>
-            Gateway: http://localhost:8080 | Features: Mint, Send, Receive, Burn, Network Stats
+          <div style={{
+            fontSize: '14px',
+            color: 'rgba(255, 255, 255, 0.6)',
+            marginBottom: '12px',
+            display: 'flex',
+            gap: '15px',
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+          }}>
+            <span style={{
+              background: 'rgba(255,255,255,0.05)',
+              padding: '6px 14px',
+              borderRadius: '20px',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}>React 19</span>
+            <span style={{
+              background: 'rgba(255,255,255,0.05)',
+              padding: '6px 14px',
+              borderRadius: '20px',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}>TypeScript</span>
+            <span style={{
+              background: 'rgba(255,255,255,0.05)',
+              padding: '6px 14px',
+              borderRadius: '20px',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}>Bun</span>
+            <span style={{
+              background: 'rgba(255,255,255,0.05)',
+              padding: '6px 14px',
+              borderRadius: '20px',
+              border: '1px solid rgba(255,255,255,0.1)'
+            }}>Vite</span>
           </div>
-          <div style={{ fontSize: '11px', marginTop: '8px', color: 'rgba(255, 255, 255, 0.5)' }}>
-            Showcasing the full power of taproot-assets-rest-gateway
+          <div style={{ fontSize: '13px', color: 'rgba(255, 255, 255, 0.5)', marginTop: '15px' }}>
+            <div style={{ marginBottom: '8px' }}>
+              🌐 Gateway: <span style={{ color: '#00ff41', fontFamily: 'monospace' }}>http://localhost:8080</span>
+            </div>
+            <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.4)' }}>
+              Features: Mint • Send • Receive • Burn • Network Stats • Transfer History
+            </div>
+          </div>
+          <div style={{
+            fontSize: '13px',
+            marginTop: '20px',
+            paddingTop: '20px',
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            color: 'rgba(255, 255, 255, 0.5)'
+          }}>
+            🚀 Showcasing the full power of <span style={{
+              color: '#00ff41',
+              fontWeight: '600',
+              textShadow: '0 0 10px rgba(0,255,65,0.3)'
+            }}>taproot-assets-rest-gateway</span>
           </div>
         </div>
       </div>

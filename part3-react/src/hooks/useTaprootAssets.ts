@@ -53,6 +53,7 @@ export function useTaprootAssets() {
     loading,
     error,
     connected,
-    refresh: fetchData
+    refresh: fetchData,
+    lastUpdate: new Date()
   };
 }

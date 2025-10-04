@@ -10,7 +10,17 @@ export interface Asset {
     meta_hash?: string;
     asset_id?: string;
     asset_type?: string;
+    genesis_point?: string;
   };
+  chain_anchor?: {
+    block_height?: number;
+    anchor_tx?: string;
+  };
+  decimal_display?: {
+    decimal_display?: number;
+  };
+  script_key?: string;
+  prev_witnesses?: any[];
 }
 
 export interface AssetBalance {
