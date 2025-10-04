@@ -20,6 +20,7 @@ Then visit **http://localhost:8999/part0-setup/** to begin!
 - Part 1: http://localhost:8999/part1-cors-demo/
 - Part 2: http://localhost:8999/part2-gateway-connection/
 - Part 3: http://localhost:8999/part3-starter/
+- Part 3 React: http://localhost:5173/ (runs separately with `bun run dev`)
 
 Navigate seamlessly between parts using the built-in navigation buttons!
 
@@ -37,6 +38,7 @@ Navigate seamlessly between parts using the built-in navigation buttons!
 - **Part 1:** Experience CORS/auth barriers firsthand
 - **Part 2:** Mint, send, and receive assets via gateway
 - **Part 3:** Build a live portfolio viewer
+- **Part 3 React:** Modern framework integration with React + Vite
 
 **Duration:** ~90 minutes
 
