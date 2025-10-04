@@ -59,6 +59,7 @@ Navigate seamlessly between parts using the built-in navigation buttons!
 - [REST Gateway Repository](https://github.com/privkeyio/taproot-assets-rest-gateway)
 - [Taproot Assets Documentation](https://docs.lightning.engineering/lightning-network-tools/taproot-assets)
 - [Polar Development Environment](https://lightningpolar.com/)
+- [Polar Taproot Assets Guide](https://docs.lightning.engineering/lightning-network-tools/taproot-assets/polar)
 
 ## 🤝 Contributing
 

@@ -6,7 +6,7 @@ Get your development environment ready in 5 minutes.
 
 ## Prerequisites
 
-✅ **Polar** running with an LND node that has Taproot Assets enabled
+✅ **Polar** running with an LND node that has Taproot Assets enabled ([setup guide](https://docs.lightning.engineering/lightning-network-tools/taproot-assets/polar))
 ✅ **Rust** installed (for the gateway)
 ✅ **Git** to clone repositories
 
