@@ -7,9 +7,13 @@ import { MintWizard } from './components/MintWizard';
 import { TransferHistory } from './components/TransferHistory';
 import { NetworkStats } from './components/NetworkStats';
 import { BurnAssets } from './components/BurnAssets';
+import { UniverseExplorer } from './components/UniverseExplorer';
+import { ProofsExplorer } from './components/ProofsExplorer';
+import { WalletExplorer } from './components/WalletExplorer';
+import { RFQMarket } from './components/RFQMarket';
 import './App.css';
 
-type Tab = 'portfolio' | 'mint' | 'send' | 'receive' | 'transfers' | 'burn' | 'network';
+type Tab = 'portfolio' | 'mint' | 'send' | 'receive' | 'transfers' | 'burn' | 'network' | 'universe' | 'proofs' | 'wallet' | 'rfq';
 
 function App() {
   const { assets, balances, loading, error, connected, refresh } = useTaprootAssets();
@@ -254,7 +258,7 @@ function App() {
             overflowX: 'auto',
             scrollbarWidth: 'thin'
           }}>
-            {(['portfolio', 'mint', 'send', 'receive', 'transfers', 'burn', 'network'] as Tab[]).map(tab => (
+            {(['portfolio', 'mint', 'send', 'receive', 'transfers', 'burn', 'network', 'universe', 'proofs', 'wallet', 'rfq'] as Tab[]).map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -295,6 +299,10 @@ function App() {
                 {tab === 'transfers' && '📜 Transfers'}
                 {tab === 'burn' && '🔥 Burn'}
                 {tab === 'network' && '🌐 Network'}
+                {tab === 'universe' && '🌌 Universe'}
+                {tab === 'proofs' && '📜 Proofs'}
+                {tab === 'wallet' && '🔑 Wallet'}
+                {tab === 'rfq' && '💱 RFQ'}
               </button>
             ))}
           </div>
@@ -618,6 +626,18 @@ function App() {
 
           {/* Network Tab */}
           {activeTab === 'network' && <NetworkStats />}
+
+          {/* Universe Tab */}
+          {activeTab === 'universe' && <UniverseExplorer />}
+
+          {/* Proofs Tab */}
+          {activeTab === 'proofs' && <ProofsExplorer />}
+
+          {/* Wallet Tab */}
+          {activeTab === 'wallet' && <WalletExplorer />}
+
+          {/* RFQ Tab */}
+          {activeTab === 'rfq' && <RFQMarket />}
         </div>
 
         {/* Footer */}
@@ -681,7 +701,7 @@ function App() {
               🌐 Gateway: <span style={{ color: '#00ff41', fontFamily: 'monospace' }}>http://localhost:8080</span>
             </div>
             <div style={{ fontSize: '12px', color: 'rgba(255, 255, 255, 0.4)' }}>
-              Features: Mint • Send • Receive • Burn • Network Stats • Transfer History
+              Features: Mint • Send • Receive • Burn • Transfers • Network • Universe • Proofs • Wallet • RFQ
             </div>
           </div>
           <div style={{
