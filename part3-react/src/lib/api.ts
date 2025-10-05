@@ -15,6 +15,7 @@ export interface Asset {
   chain_anchor?: {
     block_height?: number;
     anchor_tx?: string;
+    anchor_outpoint?: string;
   };
   decimal_display?: {
     decimal_display?: number;

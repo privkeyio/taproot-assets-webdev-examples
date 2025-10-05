@@ -142,19 +142,21 @@ function App() {
       <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
         {/* Animated Logo */}
         <div style={{ textAlign: 'center', marginBottom: '30px', animation: 'fadeIn 0.8s ease-out' }}>
-          <img
-            src="/privkey-logo.png"
-            alt="PrivKey LLC"
-            style={{
-              display: 'inline-block',
-              maxWidth: '320px',
-              filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.5))',
-              transition: 'transform 0.3s ease',
-              cursor: 'pointer'
-            }}
-            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-          />
+          <a href="https://privkey.io" target="_blank" rel="noopener noreferrer">
+            <img
+              src="/privkey-logo.png"
+              alt="PrivKey LLC"
+              style={{
+                display: 'inline-block',
+                maxWidth: '320px',
+                filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.5))',
+                transition: 'transform 0.3s ease',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+              onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+            />
+          </a>
         </div>
 
         {/* Hero Section */}
