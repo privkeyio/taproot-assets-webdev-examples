@@ -110,9 +110,34 @@ export function MintWizard() {
 
   return (
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h2 style={{ color: '#ffffff', marginBottom: '30px', textAlign: 'center' }}>
+      <h2 style={{ color: '#ffffff', marginBottom: '10px', textAlign: 'center' }}>
         🪙 Asset Minting Wizard
       </h2>
+      <p style={{ color: '#a0a0a0', textAlign: 'center', marginBottom: '15px', fontSize: '14px' }}>
+        Create and mint custom Taproot Assets on Bitcoin
+      </p>
+
+      {/* Quick Start Instructions */}
+      <div style={{
+        background: 'rgba(102, 126, 234, 0.08)',
+        border: '1px solid rgba(102, 126, 234, 0.25)',
+        borderRadius: '10px',
+        padding: '15px',
+        marginBottom: '25px',
+        fontSize: '13px',
+        color: '#a0a0a0'
+      }}>
+        <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '8px', fontSize: '14px' }}>
+          🚀 Quick Start Guide
+        </div>
+        <ol style={{ margin: '0', paddingLeft: '20px', lineHeight: '1.6' }}>
+          <li>Choose asset type: Normal (fungible tokens) or Collectible (NFT)</li>
+          <li>Enter asset name and amount (for normal assets)</li>
+          <li>Optionally add metadata to describe your asset</li>
+          <li>Create the asset, then finalize and broadcast to the Bitcoin network</li>
+          <li>Wait ~30 seconds for confirmation</li>
+        </ol>
+      </div>
 
       {/* Progress Steps */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '40px', position: 'relative' }}>
@@ -154,11 +179,16 @@ export function MintWizard() {
           background: 'rgba(255, 68, 68, 0.1)',
           border: '1px solid rgba(255, 68, 68, 0.3)',
           borderRadius: '8px',
-          padding: '15px',
+          padding: '14px',
           marginBottom: '20px',
-          color: '#ff4444'
+          color: '#ff4444',
+          fontSize: '14px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
         }}>
-          ⚠️ {error}
+          <span style={{ fontSize: '18px' }}>⚠️</span>
+          <span>{error}</span>
         </div>
       )}
 
@@ -170,7 +200,9 @@ export function MintWizard() {
           borderRadius: '12px',
           padding: '30px'
         }}>
-          <h3 style={{ color: '#ffffff', marginBottom: '20px' }}>Create New Asset</h3>
+          <h3 style={{ color: '#ffffff', marginBottom: '20px', fontSize: '18px' }}>
+            🎨 Create New Asset
+          </h3>
 
           <div style={{ marginBottom: '20px' }}>
             <label style={{ display: 'block', color: '#a0a0a0', marginBottom: '8px', fontSize: '14px' }}>
@@ -309,19 +341,23 @@ export function MintWizard() {
           borderRadius: '12px',
           padding: '30px'
         }}>
-          <h3 style={{ color: '#ffffff', marginBottom: '20px' }}>Finalize & Broadcast</h3>
+          <h3 style={{ color: '#ffffff', marginBottom: '20px', fontSize: '18px' }}>
+            🎉 Finalize & Broadcast
+          </h3>
 
           <div style={{
-            background: 'rgba(0,0,0,0.3)',
+            background: 'rgba(0, 255, 65, 0.08)',
+            border: '1px solid rgba(0, 255, 65, 0.25)',
             padding: '20px',
-            borderRadius: '8px',
+            borderRadius: '10px',
             marginBottom: '20px'
           }}>
-            <div style={{ color: '#00ff41', fontSize: '16px', marginBottom: '10px' }}>
-              ✅ Asset Created Successfully
+            <div style={{ color: '#00ff41', fontSize: '16px', marginBottom: '10px', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <span style={{ fontSize: '20px' }}>✅</span>
+              <span>Asset Created Successfully</span>
             </div>
-            <div style={{ color: '#a0a0a0', fontSize: '14px' }}>
-              Ready to finalize! This will fund and broadcast the transaction to mint your asset.
+            <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.6' }}>
+              Ready to finalize! This will fund and broadcast the transaction to mint your asset on the Bitcoin network.
             </div>
 
             {pendingBatch && (
@@ -405,17 +441,77 @@ export function MintWizard() {
 
           <div style={{
             marginTop: '20px',
-            padding: '15px',
-            background: 'rgba(255,255,255,0.05)',
+            padding: '12px 15px',
+            background: 'rgba(0,0,0,0.3)',
             borderRadius: '8px',
             fontSize: '13px',
-            color: '#a0a0a0'
+            color: '#b0b0b0',
+            lineHeight: '1.6'
           }}>
-            ℹ️ This will fund the batch, create the on-chain transaction, and broadcast it to the network in one step. Wait ~30 seconds for confirmation.
+            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> This will fund the batch, create the on-chain transaction, and broadcast it to the network in one step. Wait ~30 seconds for confirmation.
           </div>
         </div>
       )}
 
+      {/* Info Panel */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
+        border: '1px solid rgba(102, 126, 234, 0.3)',
+        borderRadius: '12px',
+        padding: '25px',
+        marginTop: '25px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <span style={{ fontSize: '24px' }}>ℹ️</span>
+          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
+            About Asset Minting
+          </h3>
+        </div>
+        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
+          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
+            The minting process creates new Taproot Assets anchored to Bitcoin transactions:
+          </p>
+          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
+            <div style={{
+              background: 'rgba(102, 126, 234, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(102, 126, 234, 0.15)'
+            }}>
+              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                💰 Normal Assets
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Fungible tokens with a defined supply, perfect for currencies or points
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(118, 75, 162, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(118, 75, 162, 0.15)'
+            }}>
+              <div style={{ color: '#764ba2', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                🎨 Collectibles
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Non-fungible tokens (NFTs) with a supply of 1, ideal for unique items
+              </div>
+            </div>
+          </div>
+          <div style={{
+            background: 'rgba(0,0,0,0.3)',
+            padding: '12px 15px',
+            borderRadius: '8px',
+            fontSize: '13px',
+            color: '#b0b0b0',
+            lineHeight: '1.6'
+          }}>
+            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> The two-step process (create + finalize) gives you time to review before committing to the Bitcoin blockchain.
+            Once finalized, the asset is permanently recorded.
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

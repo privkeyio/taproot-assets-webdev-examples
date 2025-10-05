@@ -147,21 +147,46 @@ export function ProofsExplorer() {
       <h2 style={{ color: '#ffffff', marginBottom: '10px', textAlign: 'center' }}>
         📜 Proofs Explorer
       </h2>
-      <p style={{ color: '#a0a0a0', textAlign: 'center', marginBottom: '30px', fontSize: '14px' }}>
+      <p style={{ color: '#a0a0a0', textAlign: 'center', marginBottom: '15px', fontSize: '14px' }}>
         Export, verify, and decode cryptographic proofs for your assets
       </p>
+
+      {/* Quick Start Instructions */}
+      <div style={{
+        background: 'rgba(102, 126, 234, 0.08)',
+        border: '1px solid rgba(102, 126, 234, 0.25)',
+        borderRadius: '10px',
+        padding: '15px',
+        marginBottom: '25px',
+        fontSize: '13px',
+        color: '#a0a0a0'
+      }}>
+        <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '8px', fontSize: '14px' }}>
+          🚀 Quick Start Guide
+        </div>
+        <ol style={{ margin: '0', paddingLeft: '20px', lineHeight: '1.6' }}>
+          <li>Select an asset from your wallet to export its cryptographic proof</li>
+          <li>Click "Export Proof" to generate the proof file</li>
+          <li>Use "Verify Proof" to cryptographically validate the exported proof</li>
+          <li>Click "Decode Proof" to inspect the internal structure and witnesses</li>
+        </ol>
+      </div>
 
       {error && (
         <div style={{
           background: 'rgba(255, 68, 68, 0.1)',
           border: '1px solid rgba(255, 68, 68, 0.3)',
           borderRadius: '8px',
-          padding: '12px',
+          padding: '14px',
           marginBottom: '20px',
           color: '#ff4444',
-          fontSize: '14px'
+          fontSize: '14px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
         }}>
-          ⚠️ {error}
+          <span style={{ fontSize: '18px' }}>⚠️</span>
+          <span>{error}</span>
         </div>
       )}
 
@@ -170,12 +195,16 @@ export function ProofsExplorer() {
           background: 'rgba(0, 255, 65, 0.1)',
           border: '1px solid rgba(0, 255, 65, 0.3)',
           borderRadius: '8px',
-          padding: '12px',
+          padding: '14px',
           marginBottom: '20px',
           color: '#00ff41',
-          fontSize: '14px'
+          fontSize: '14px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
         }}>
-          {success}
+          <span style={{ fontSize: '18px' }}>✅</span>
+          <span>{success}</span>
         </div>
       )}
 
@@ -389,26 +418,72 @@ export function ProofsExplorer() {
 
       {/* Info Panel */}
       <div style={{
-        background: 'rgba(102, 126, 234, 0.1)',
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
         border: '1px solid rgba(102, 126, 234, 0.3)',
         borderRadius: '12px',
-        padding: '20px'
+        padding: '25px'
       }}>
-        <h3 style={{ color: '#667eea', marginBottom: '15px', fontSize: '16px' }}>
-          ℹ️ About Proofs
-        </h3>
-        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.6' }}>
-          <p style={{ marginBottom: '10px' }}>
-            Taproot Assets uses cryptographic proofs to verify asset ownership and history:
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <span style={{ fontSize: '24px' }}>ℹ️</span>
+          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
+            About Cryptographic Proofs
+          </h3>
+        </div>
+        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
+          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
+            Taproot Assets uses cryptographic proofs to verify asset ownership and complete transaction history:
           </p>
-          <ul style={{ paddingLeft: '20px', margin: '10px 0' }}>
-            <li><strong>Export:</strong> Extract the proof file for an asset you own</li>
-            <li><strong>Verify:</strong> Cryptographically validate a proof's authenticity</li>
-            <li><strong>Decode:</strong> Inspect the proof structure, witnesses, and metadata</li>
-          </ul>
-          <p style={{ marginTop: '10px' }}>
-            Proofs are essential for trustless asset verification and can be shared with others to prove ownership.
-          </p>
+          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
+            <div style={{
+              background: 'rgba(102, 126, 234, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(102, 126, 234, 0.15)'
+            }}>
+              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                📤 Export Proofs
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Extract cryptographic proof files for assets you own to share or archive
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(0, 255, 65, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(0, 255, 65, 0.15)'
+            }}>
+              <div style={{ color: '#00ff41', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                ✅ Verify Proofs
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Cryptographically validate proof authenticity and asset ownership
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(118, 75, 162, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(118, 75, 162, 0.15)'
+            }}>
+              <div style={{ color: '#764ba2', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                🔍 Decode Proofs
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Inspect internal proof structure, witnesses, and metadata details
+              </div>
+            </div>
+          </div>
+          <div style={{
+            background: 'rgba(0,0,0,0.3)',
+            padding: '12px 15px',
+            borderRadius: '8px',
+            fontSize: '13px',
+            color: '#b0b0b0',
+            lineHeight: '1.6'
+          }}>
+            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> Proofs are essential for trustless asset verification and can be shared with others to prove ownership without revealing private keys.
+          </div>
         </div>
       </div>
     </div>

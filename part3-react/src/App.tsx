@@ -250,13 +250,12 @@ function App() {
 
           {/* Tabs */}
           <div style={{
-            display: 'flex',
-            gap: '12px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
+            gap: '8px',
             marginBottom: '35px',
             borderBottom: '2px solid rgba(255,255,255,0.08)',
-            paddingBottom: '12px',
-            overflowX: 'auto',
-            scrollbarWidth: 'thin'
+            paddingBottom: '16px'
           }}>
             {(['portfolio', 'mint', 'send', 'receive', 'transfers', 'burn', 'network', 'universe', 'proofs', 'wallet', 'rfq'] as Tab[]).map(tab => (
               <button
@@ -268,16 +267,16 @@ function App() {
                     : 'transparent',
                   color: activeTab === tab ? '#ffffff' : '#a0a0a0',
                   border: activeTab === tab ? '1px solid rgba(102, 126, 234, 0.5)' : '1px solid transparent',
-                  padding: '14px 24px',
-                  borderRadius: '12px',
+                  padding: '10px 12px',
+                  borderRadius: '10px',
                   cursor: 'pointer',
-                  fontSize: '15px',
+                  fontSize: '13px',
                   fontWeight: '600',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   whiteSpace: 'nowrap',
-                  flexShrink: 0,
                   position: 'relative',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
+                  textAlign: 'center'
                 }}
                 onMouseEnter={(e) => {
                   if (activeTab !== tab) {

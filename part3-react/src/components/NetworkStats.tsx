@@ -6,53 +6,88 @@ export function NetworkStats() {
   if (loading && !stats && !daemonInfo) {
     return (
       <div style={{ textAlign: 'center', padding: '60px', color: '#a0a0a0' }}>
-        <div style={{ fontSize: '48px', marginBottom: '20px' }}>⏳</div>
-        Loading network statistics...
+        <div style={{ fontSize: '48px', marginBottom: '20px', opacity: 0.6 }}>⏳</div>
+        <div style={{ fontSize: '15px' }}>Loading network statistics...</div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div style={{
-        background: 'rgba(255, 68, 68, 0.1)',
-        border: '1px solid rgba(255, 68, 68, 0.3)',
-        borderRadius: '12px',
-        padding: '30px',
-        textAlign: 'center'
-      }}>
-        <div style={{ fontSize: '48px', marginBottom: '20px' }}>⚠️</div>
-        <h3 style={{ color: '#ff4444', marginBottom: '10px' }}>Error Loading Stats</h3>
-        <p style={{ color: '#a0a0a0' }}>{error}</p>
+      <div>
+        <h2 style={{ color: '#ffffff', marginBottom: '10px', textAlign: 'center' }}>
+          🌐 Network Explorer
+        </h2>
+        <p style={{ color: '#a0a0a0', textAlign: 'center', marginBottom: '30px', fontSize: '14px' }}>
+          Monitor daemon status and network statistics
+        </p>
+        <div style={{
+          background: 'rgba(255, 68, 68, 0.1)',
+          border: '1px solid rgba(255, 68, 68, 0.3)',
+          borderRadius: '12px',
+          padding: '30px',
+          textAlign: 'center'
+        }}>
+          <div style={{ fontSize: '48px', marginBottom: '15px' }}>⚠️</div>
+          <h3 style={{ color: '#ff4444', marginBottom: '10px', fontSize: '18px' }}>Error Loading Stats</h3>
+          <p style={{ color: '#a0a0a0', fontSize: '14px' }}>{error}</p>
+        </div>
       </div>
     );
   }
 
   return (
     <div>
+      <h2 style={{ color: '#ffffff', marginBottom: '10px', textAlign: 'center' }}>
+        🌐 Network Explorer
+      </h2>
+      <p style={{ color: '#a0a0a0', textAlign: 'center', marginBottom: '15px', fontSize: '14px' }}>
+        Monitor daemon status and network statistics
+      </p>
+
+      {/* Quick Start Instructions */}
+      <div style={{
+        background: 'rgba(102, 126, 234, 0.08)',
+        border: '1px solid rgba(102, 126, 234, 0.25)',
+        borderRadius: '10px',
+        padding: '15px',
+        marginBottom: '25px',
+        fontSize: '13px',
+        color: '#a0a0a0'
+      }}>
+        <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '8px', fontSize: '14px' }}>
+          🚀 Quick Start Guide
+        </div>
+        <ol style={{ margin: '0', paddingLeft: '20px', lineHeight: '1.6' }}>
+          <li>View daemon information including Tapd and LND versions</li>
+          <li>Monitor universe statistics like total assets and groups</li>
+          <li>Check asset distribution across the network</li>
+          <li>Click "Refresh" to update statistics in real-time</li>
+        </ol>
+      </div>
+
       <div style={{
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '30px'
+        justifyContent: 'flex-end',
+        marginBottom: '20px'
       }}>
-        <h2 style={{ color: '#ffffff', margin: 0 }}>🌐 Network Explorer</h2>
         <button
           onClick={refresh}
           disabled={loading}
           style={{
-            background: 'rgba(255, 255, 255, 0.9)',
-            color: '#000000',
+            background: loading ? 'rgba(255,255,255,0.1)' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: '#ffffff',
             border: 'none',
-            padding: '10px 20px',
+            padding: '12px 24px',
             borderRadius: '8px',
             cursor: loading ? 'not-allowed' : 'pointer',
             opacity: loading ? 0.6 : 1,
             fontSize: '14px',
-            fontWeight: '600'
+            fontWeight: '600',
+            transition: 'all 0.3s'
           }}
         >
-          {loading ? '⟳ Refreshing...' : '🔄 Refresh'}
+          {loading ? '⏳ Refreshing...' : '🔄 Refresh Stats'}
         </button>
       </div>
 
@@ -289,15 +324,79 @@ export function NetworkStats() {
       {(!stats || !daemonInfo) && (
         <div style={{
           textAlign: 'center',
-          padding: '60px',
-          background: 'rgba(255,255,255,0.05)',
-          borderRadius: '12px'
+          padding: '60px 20px',
+          background: 'rgba(0,0,0,0.2)',
+          borderRadius: '12px',
+          border: '2px dashed rgba(255,255,255,0.1)'
         }}>
-          <div style={{ fontSize: '48px', marginBottom: '20px' }}>📡</div>
-          <h3 style={{ color: '#ffffff', marginBottom: '10px' }}>No Network Data</h3>
-          <p style={{ color: '#a0a0a0' }}>
+          <div style={{ fontSize: '48px', marginBottom: '15px', opacity: 0.6 }}>📡</div>
+          <div style={{ color: '#a0a0a0', fontSize: '15px', marginBottom: '10px' }}>
+            No network data available
+          </div>
+          <div style={{ color: '#666', fontSize: '13px' }}>
             Connect to a Taproot Assets daemon to view network statistics
-          </p>
+          </div>
+        </div>
+      )}
+
+      {/* Info Panel */}
+      {(stats || daemonInfo) && (
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
+          border: '1px solid rgba(102, 126, 234, 0.3)',
+          borderRadius: '12px',
+          padding: '25px',
+          marginTop: '25px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+            <span style={{ fontSize: '24px' }}>ℹ️</span>
+            <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
+              About Network Statistics
+            </h3>
+          </div>
+          <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
+            <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
+              The network explorer provides real-time insights into your Taproot Assets daemon:
+            </p>
+            <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
+              <div style={{
+                background: 'rgba(102, 126, 234, 0.05)',
+                padding: '12px 15px',
+                borderRadius: '8px',
+                border: '1px solid rgba(102, 126, 234, 0.15)'
+              }}>
+                <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                  ⚡ Daemon Info
+                </div>
+                <div style={{ fontSize: '13px' }}>
+                  Version information, network type, and identity keys for your node
+                </div>
+              </div>
+              <div style={{
+                background: 'rgba(118, 75, 162, 0.05)',
+                padding: '12px 15px',
+                borderRadius: '8px',
+                border: '1px solid rgba(118, 75, 162, 0.15)'
+              }}>
+                <div style={{ color: '#764ba2', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                  🌌 Universe Stats
+                </div>
+                <div style={{ fontSize: '13px' }}>
+                  Global statistics including total assets, groups, syncs, and proofs
+                </div>
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(0,0,0,0.3)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              fontSize: '13px',
+              color: '#b0b0b0',
+              lineHeight: '1.6'
+            }}>
+              <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> Regularly refresh statistics to monitor network activity and asset distribution in real-time.
+            </div>
+          </div>
         </div>
       )}
     </div>
