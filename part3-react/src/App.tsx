@@ -176,18 +176,27 @@ function App() {
           <p style={{
             color: 'rgba(255,255,255,0.7)',
             fontSize: '18px',
-            maxWidth: '700px',
+            maxWidth: '900px',
             margin: '0 auto',
-            lineHeight: '1.6'
+            lineHeight: '1.6',
+            whiteSpace: 'nowrap'
           }}>
             Full-featured React + TypeScript demo showcasing the complete power of{' '}
-            <span style={{
-              color: '#00ff41',
-              fontWeight: '600',
-              textShadow: '0 0 10px rgba(0,255,65,0.3)'
-            }}>
+            <a
+              href="https://github.com/privkeyio/taproot-assets-rest-gateway"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: '#00ff41',
+                fontWeight: '600',
+                textShadow: '0 0 10px rgba(0,255,65,0.3)',
+                textDecoration: 'none'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+              onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+            >
               taproot-assets-rest-gateway
-            </span>
+            </a>
           </p>
         </div>
 
@@ -735,11 +744,22 @@ function App() {
             borderTop: '1px solid rgba(255, 255, 255, 0.1)',
             color: 'rgba(255, 255, 255, 0.5)'
           }}>
-            🚀 Showcasing the full power of <span style={{
-              color: '#00ff41',
-              fontWeight: '600',
-              textShadow: '0 0 10px rgba(0,255,65,0.3)'
-            }}>taproot-assets-rest-gateway</span>
+            🚀 Showcasing the full power of{' '}
+            <a
+              href="https://github.com/privkeyio/taproot-assets-rest-gateway"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: '#00ff41',
+                fontWeight: '600',
+                textShadow: '0 0 10px rgba(0,255,65,0.3)',
+                textDecoration: 'none'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'}
+              onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}
+            >
+              taproot-assets-rest-gateway
+            </a>
           </div>
         </div>
       </div>
