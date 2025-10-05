@@ -89,10 +89,16 @@ export function WalletExplorer() {
         throw new Error('Invalid anchor outpoint');
       }
 
-      const hexToBase64 = (hex: string): string => {
-        const bytes = new Uint8Array(hex.match(/.{1,2}/g)?.map(byte => parseInt(byte, 16)) || []);
-        return btoa(String.fromCharCode(...bytes));
+      // Reverse hex string byte-by-byte (Bitcoin txids are displayed in reverse order)
+      const reverseHex = (hex: string): string => {
+        const bytes = hex.match(/.{1,2}/g) || [];
+        return bytes.reverse().join('');
       };
+
+      // Create a challenge as raw bytes and encode to base64
+      const challengeText = 'ownership_challenge_' + Date.now();
+      const challengeBytes = new TextEncoder().encode(challengeText);
+      const challengeBase64 = btoa(String.fromCharCode(...challengeBytes));
 
       const response = await fetch('http://localhost:8080/v1/taproot-assets/wallet/ownership/prove', {
         method: 'POST',
@@ -101,10 +107,10 @@ export function WalletExplorer() {
           asset_id: selectedAsset,
           script_key: scriptKey,
           outpoint: {
-            txid: hexToBase64(outpoint[0]),
+            txid: reverseHex(outpoint[0]),
             output_index: parseInt(outpoint[1])
           },
-          challenge: btoa('ownership_challenge_' + Date.now())
+          challenge: challengeBase64
         })
       });
 
@@ -129,6 +135,78 @@ export function WalletExplorer() {
       <p style={{ color: '#a0a0a0', textAlign: 'center', marginBottom: '15px', fontSize: '14px' }}>
         Generate keys and prove asset ownership
       </p>
+
+      {/* Info Panel - moved to top */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
+        border: '1px solid rgba(102, 126, 234, 0.3)',
+        borderRadius: '12px',
+        padding: '25px',
+        marginBottom: '25px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <span style={{ fontSize: '24px' }}>ℹ️</span>
+          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
+            About Wallet Operations
+          </h3>
+        </div>
+        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
+          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
+            Wallet operations provide advanced key management and ownership verification:
+          </p>
+          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
+            <div style={{
+              background: 'rgba(102, 126, 234, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(102, 126, 234, 0.15)'
+            }}>
+              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                🔑 Internal Keys
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                HD wallet keys derived from your master seed for managing assets
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(118, 75, 162, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(118, 75, 162, 0.15)'
+            }}>
+              <div style={{ color: '#764ba2', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                📝 Script Keys
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Specialized keys used in Taproot asset script paths and conditions
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(0, 255, 65, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(0, 255, 65, 0.15)'
+            }}>
+              <div style={{ color: '#00ff41', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                🛡️ Ownership Proofs
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Cryptographic signatures proving you control specific assets without revealing private keys
+              </div>
+            </div>
+          </div>
+          <div style={{
+            background: 'rgba(0,0,0,0.3)',
+            padding: '12px 15px',
+            borderRadius: '8px',
+            fontSize: '13px',
+            color: '#b0b0b0',
+            lineHeight: '1.6'
+          }}>
+            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> All keys are deterministically derived from your wallet seed, ensuring backup and recovery capabilities while maintaining security.
+          </div>
+        </div>
+      </div>
 
       {/* Quick Start Instructions */}
       <div style={{
@@ -369,77 +447,6 @@ export function WalletExplorer() {
               </pre>
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Info Panel */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
-        border: '1px solid rgba(102, 126, 234, 0.3)',
-        borderRadius: '12px',
-        padding: '25px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
-          <span style={{ fontSize: '24px' }}>ℹ️</span>
-          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
-            About Wallet Operations
-          </h3>
-        </div>
-        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
-          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
-            Wallet operations provide advanced key management and ownership verification:
-          </p>
-          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
-            <div style={{
-              background: 'rgba(102, 126, 234, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(102, 126, 234, 0.15)'
-            }}>
-              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                🔑 Internal Keys
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                HD wallet keys derived from your master seed for managing assets
-              </div>
-            </div>
-            <div style={{
-              background: 'rgba(118, 75, 162, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(118, 75, 162, 0.15)'
-            }}>
-              <div style={{ color: '#764ba2', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                📝 Script Keys
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Specialized keys used in Taproot asset script paths and conditions
-              </div>
-            </div>
-            <div style={{
-              background: 'rgba(0, 255, 65, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(0, 255, 65, 0.15)'
-            }}>
-              <div style={{ color: '#00ff41', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                🛡️ Ownership Proofs
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Cryptographic signatures proving you control specific assets without revealing private keys
-              </div>
-            </div>
-          </div>
-          <div style={{
-            background: 'rgba(0,0,0,0.3)',
-            padding: '12px 15px',
-            borderRadius: '8px',
-            fontSize: '13px',
-            color: '#b0b0b0',
-            lineHeight: '1.6'
-          }}>
-            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> All keys are deterministically derived from your wallet seed, ensuring backup and recovery capabilities while maintaining security.
-          </div>
         </div>
       </div>
     </div>

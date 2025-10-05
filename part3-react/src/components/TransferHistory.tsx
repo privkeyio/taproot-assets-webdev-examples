@@ -95,6 +95,66 @@ export function TransferHistory() {
         Track all asset transfers and transactions
       </p>
 
+      {/* Info Panel */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
+        border: '1px solid rgba(102, 126, 234, 0.3)',
+        borderRadius: '12px',
+        padding: '25px',
+        marginBottom: '25px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <span style={{ fontSize: '24px' }}>ℹ️</span>
+          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
+            About Transfer History
+          </h3>
+        </div>
+        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
+          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
+            Transfer history provides a complete audit trail of all asset movements:
+          </p>
+          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
+            <div style={{
+              background: 'rgba(0, 255, 65, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(0, 255, 65, 0.15)'
+            }}>
+              <div style={{ color: '#00ff41', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                📥 Received Transfers
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Assets received from other users or addresses
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(102, 126, 234, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(102, 126, 234, 0.15)'
+            }}>
+              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                📤 Sent Transfers
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Assets sent to other users or addresses
+              </div>
+            </div>
+          </div>
+          <div style={{
+            background: 'rgba(0,0,0,0.3)',
+            padding: '12px 15px',
+            borderRadius: '8px',
+            fontSize: '13px',
+            color: '#b0b0b0',
+            lineHeight: '1.6'
+          }}>
+            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> All transfers are anchored to Bitcoin transactions, providing cryptographic proof of ownership and transfer history.
+            Block confirmations ensure finality.
+          </div>
+        </div>
+      </div>
+
       {/* Quick Start Instructions */}
       <div style={{
         background: 'rgba(102, 126, 234, 0.08)',
@@ -292,66 +352,6 @@ export function TransferHistory() {
             </div>
           );
         })}
-      </div>
-
-      {/* Info Panel */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
-        border: '1px solid rgba(102, 126, 234, 0.3)',
-        borderRadius: '12px',
-        padding: '25px',
-        marginTop: '25px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
-          <span style={{ fontSize: '24px' }}>ℹ️</span>
-          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
-            About Transfer History
-          </h3>
-        </div>
-        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
-          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
-            Transfer history provides a complete audit trail of all asset movements:
-          </p>
-          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
-            <div style={{
-              background: 'rgba(0, 255, 65, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(0, 255, 65, 0.15)'
-            }}>
-              <div style={{ color: '#00ff41', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                📥 Received Transfers
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Assets received from other users or addresses
-              </div>
-            </div>
-            <div style={{
-              background: 'rgba(102, 126, 234, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(102, 126, 234, 0.15)'
-            }}>
-              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                📤 Sent Transfers
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Assets sent to other users or addresses
-              </div>
-            </div>
-          </div>
-          <div style={{
-            background: 'rgba(0,0,0,0.3)',
-            padding: '12px 15px',
-            borderRadius: '8px',
-            fontSize: '13px',
-            color: '#b0b0b0',
-            lineHeight: '1.6'
-          }}>
-            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> All transfers are anchored to Bitcoin transactions, providing cryptographic proof of ownership and transfer history.
-            Block confirmations ensure finality.
-          </div>
-        </div>
       </div>
     </div>
   );

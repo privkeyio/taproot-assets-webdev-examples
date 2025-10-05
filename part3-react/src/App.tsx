@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as React from 'react';
 import { useTaprootAssets } from './hooks/useTaprootAssets';
 import { AssetCard } from './components/AssetCard';
@@ -17,7 +17,30 @@ type Tab = 'portfolio' | 'mint' | 'send' | 'receive' | 'transfers' | 'burn' | 'n
 
 function App() {
   const { assets, balances, loading, error, connected, refresh } = useTaprootAssets();
-  const [activeTab, setActiveTab] = useState<Tab>('portfolio');
+
+  // Initialize activeTab from URL hash
+  const getTabFromHash = (): Tab => {
+    const hash = window.location.hash.slice(1) as Tab;
+    const validTabs: Tab[] = ['portfolio', 'mint', 'send', 'receive', 'transfers', 'burn', 'network', 'universe', 'proofs', 'wallet', 'rfq'];
+    return validTabs.includes(hash) ? hash : 'portfolio';
+  };
+
+  const [activeTab, setActiveTab] = useState<Tab>(getTabFromHash());
+
+  // Update URL hash when tab changes
+  const handleTabChange = (tab: Tab) => {
+    setActiveTab(tab);
+    window.location.hash = tab;
+  };
+
+  // Listen for hash changes (back/forward navigation)
+  useEffect(() => {
+    const handleHashChange = () => {
+      setActiveTab(getTabFromHash());
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedAsset, setSelectedAsset] = useState('');
   const [sendAddress, setSendAddress] = useState('');
@@ -260,7 +283,7 @@ function App() {
             {(['portfolio', 'mint', 'send', 'receive', 'transfers', 'burn', 'network', 'universe', 'proofs', 'wallet', 'rfq'] as Tab[]).map(tab => (
               <button
                 key={tab}
-                onClick={() => setActiveTab(tab)}
+                onClick={() => handleTabChange(tab)}
                 style={{
                   background: activeTab === tab
                     ? 'linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%)'

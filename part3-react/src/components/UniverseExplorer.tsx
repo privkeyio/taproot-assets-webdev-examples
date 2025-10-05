@@ -134,6 +134,78 @@ export function UniverseExplorer() {
         Manage universe federation, sync assets, and explore the global asset universe
       </p>
 
+      {/* Info Panel */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
+        border: '1px solid rgba(102, 126, 234, 0.3)',
+        borderRadius: '12px',
+        padding: '25px',
+        marginBottom: '25px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <span style={{ fontSize: '24px' }}>ℹ️</span>
+          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
+            About Universe Federation
+          </h3>
+        </div>
+        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
+          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
+            The Universe protocol enables global asset discovery and verification:
+          </p>
+          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
+            <div style={{
+              background: 'rgba(102, 126, 234, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(102, 126, 234, 0.15)'
+            }}>
+              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                🔗 Federation Servers
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Connect to other universe nodes to discover and sync assets across the network
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(118, 75, 162, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(118, 75, 162, 0.15)'
+            }}>
+              <div style={{ color: '#764ba2', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                🔄 Universe Sync
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Pull asset data from remote servers to discover new assets and verify proofs
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(0, 255, 65, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(0, 255, 65, 0.15)'
+            }}>
+              <div style={{ color: '#00ff41', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                🌳 Universe Roots
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Merkle tree roots provide cryptographic verification of all assets in the universe
+              </div>
+            </div>
+          </div>
+          <div style={{
+            background: 'rgba(0,0,0,0.3)',
+            padding: '12px 15px',
+            borderRadius: '8px',
+            fontSize: '13px',
+            color: '#b0b0b0',
+            lineHeight: '1.6'
+          }}>
+            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> Join the testnet universe server at testnet.universe.lightning.finance:10029 to discover and sync public testnet assets.
+          </div>
+        </div>
+      </div>
+
       {/* Quick Start Instructions */}
       <div style={{
         background: 'rgba(102, 126, 234, 0.08)',
@@ -536,78 +608,6 @@ export function UniverseExplorer() {
             </div>
           </div>
         )}
-      </div>
-
-      {/* Info Panel */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
-        border: '1px solid rgba(102, 126, 234, 0.3)',
-        borderRadius: '12px',
-        padding: '25px',
-        marginTop: '25px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
-          <span style={{ fontSize: '24px' }}>ℹ️</span>
-          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
-            About Universe Federation
-          </h3>
-        </div>
-        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
-          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
-            The Universe protocol enables global asset discovery and verification:
-          </p>
-          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
-            <div style={{
-              background: 'rgba(102, 126, 234, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(102, 126, 234, 0.15)'
-            }}>
-              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                🔗 Federation Servers
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Connect to other universe nodes to discover and sync assets across the network
-              </div>
-            </div>
-            <div style={{
-              background: 'rgba(118, 75, 162, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(118, 75, 162, 0.15)'
-            }}>
-              <div style={{ color: '#764ba2', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                🔄 Universe Sync
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Pull asset data from remote servers to discover new assets and verify proofs
-              </div>
-            </div>
-            <div style={{
-              background: 'rgba(0, 255, 65, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(0, 255, 65, 0.15)'
-            }}>
-              <div style={{ color: '#00ff41', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                🌳 Universe Roots
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Merkle tree roots provide cryptographic verification of all assets in the universe
-              </div>
-            </div>
-          </div>
-          <div style={{
-            background: 'rgba(0,0,0,0.3)',
-            padding: '12px 15px',
-            borderRadius: '8px',
-            fontSize: '13px',
-            color: '#b0b0b0',
-            lineHeight: '1.6'
-          }}>
-            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> Join the testnet universe server at testnet.universe.lightning.finance:10029 to discover and sync public testnet assets.
-          </div>
-        </div>
       </div>
     </div>
   );

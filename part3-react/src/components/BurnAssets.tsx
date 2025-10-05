@@ -80,6 +80,66 @@ export function BurnAssets() {
         Permanently destroy assets - this action cannot be undone
       </p>
 
+      {/* Info Panel */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
+        border: '1px solid rgba(102, 126, 234, 0.3)',
+        borderRadius: '12px',
+        padding: '25px',
+        marginBottom: '25px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <span style={{ fontSize: '24px' }}>ℹ️</span>
+          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
+            About Burning Assets
+          </h3>
+        </div>
+        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
+          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
+            Burning assets permanently removes them from circulation. This is useful for:
+          </p>
+          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
+            <div style={{
+              background: 'rgba(255, 68, 68, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(255, 68, 68, 0.15)'
+            }}>
+              <div style={{ color: '#ff4444', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                📉 Supply Reduction
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Decrease total supply to create scarcity and deflationary pressure
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(102, 126, 234, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(102, 126, 234, 0.15)'
+            }}>
+              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                🧹 Asset Cleanup
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Remove test assets, mistakes, or unwanted tokens from your wallet
+              </div>
+            </div>
+          </div>
+          <div style={{
+            background: 'rgba(255, 68, 68, 0.15)',
+            padding: '12px 15px',
+            borderRadius: '8px',
+            fontSize: '13px',
+            color: '#ff4444',
+            lineHeight: '1.6',
+            border: '1px solid rgba(255, 68, 68, 0.3)'
+          }}>
+            <strong>⚠️ Warning:</strong> Burned assets are gone forever and cannot be recovered. This action is irreversible and permanent.
+          </div>
+        </div>
+      </div>
+
       {/* Quick Start Instructions */}
       <div style={{
         background: 'rgba(102, 126, 234, 0.08)',
@@ -401,65 +461,6 @@ export function BurnAssets() {
               ))}
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Info Panel */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
-        border: '1px solid rgba(102, 126, 234, 0.3)',
-        borderRadius: '12px',
-        padding: '25px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
-          <span style={{ fontSize: '24px' }}>ℹ️</span>
-          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
-            About Burning Assets
-          </h3>
-        </div>
-        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
-          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
-            Burning assets permanently removes them from circulation. This is useful for:
-          </p>
-          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
-            <div style={{
-              background: 'rgba(255, 68, 68, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 68, 68, 0.15)'
-            }}>
-              <div style={{ color: '#ff4444', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                📉 Supply Reduction
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Decrease total supply to create scarcity and deflationary pressure
-              </div>
-            </div>
-            <div style={{
-              background: 'rgba(102, 126, 234, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(102, 126, 234, 0.15)'
-            }}>
-              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                🧹 Asset Cleanup
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Remove test assets, mistakes, or unwanted tokens from your wallet
-              </div>
-            </div>
-          </div>
-          <div style={{
-            background: 'rgba(255, 68, 68, 0.15)',
-            padding: '12px 15px',
-            borderRadius: '8px',
-            fontSize: '13px',
-            color: '#ff4444',
-            lineHeight: '1.6',
-            border: '1px solid rgba(255, 68, 68, 0.3)'
-          }}>
-            <strong>⚠️ Warning:</strong> Burned assets are gone forever and cannot be recovered. This action is irreversible and permanent.
-          </div>
         </div>
       </div>
     </div>

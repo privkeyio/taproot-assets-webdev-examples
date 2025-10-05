@@ -161,6 +161,79 @@ export function RFQMarket() {
         Create buy/sell offers and trade assets via Request-For-Quote protocol
       </p>
 
+      {/* Info Panel */}
+      <div style={{
+        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
+        border: '1px solid rgba(102, 126, 234, 0.3)',
+        borderRadius: '12px',
+        padding: '25px',
+        marginBottom: '25px'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
+          <span style={{ fontSize: '24px' }}>ℹ️</span>
+          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
+            About RFQ Trading
+          </h3>
+        </div>
+        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
+          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
+            The Request-For-Quote (RFQ) protocol enables peer-to-peer asset trading over the Lightning Network:
+          </p>
+          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
+            <div style={{
+              background: 'rgba(0, 255, 65, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(0, 255, 65, 0.15)'
+            }}>
+              <div style={{ color: '#00ff41', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                💰 Buy Offers
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                Express interest in purchasing specific assets from peers
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(255, 68, 68, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(255, 68, 68, 0.15)'
+            }}>
+              <div style={{ color: '#ff4444', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                💵 Sell Offers
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                List your assets for sale and wait for interested buyers
+              </div>
+            </div>
+            <div style={{
+              background: 'rgba(102, 126, 234, 0.05)',
+              padding: '12px 15px',
+              borderRadius: '8px',
+              border: '1px solid rgba(102, 126, 234, 0.15)'
+            }}>
+              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
+                📊 Peer Quotes
+              </div>
+              <div style={{ fontSize: '13px' }}>
+                View active offers from connected Lightning Network nodes
+              </div>
+            </div>
+          </div>
+          <div style={{
+            background: 'rgba(0,0,0,0.3)',
+            padding: '12px 15px',
+            borderRadius: '8px',
+            fontSize: '13px',
+            color: '#b0b0b0',
+            lineHeight: '1.6'
+          }}>
+            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> Enable auto-refresh to monitor the market in real-time.
+            RFQ quotes are peer-to-peer, so you'll need to be connected to other nodes to see active offers.
+          </div>
+        </div>
+      </div>
+
       {/* Quick Start Instructions */}
       <div style={{
         background: 'rgba(102, 126, 234, 0.08)',
@@ -650,78 +723,6 @@ export function RFQMarket() {
             )}
           </div>
         )}
-      </div>
-
-      {/* Info Panel */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%)',
-        border: '1px solid rgba(102, 126, 234, 0.3)',
-        borderRadius: '12px',
-        padding: '25px'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '15px' }}>
-          <span style={{ fontSize: '24px' }}>ℹ️</span>
-          <h3 style={{ color: '#667eea', fontSize: '18px', margin: 0, fontWeight: '700' }}>
-            About RFQ Trading
-          </h3>
-        </div>
-        <div style={{ color: '#a0a0a0', fontSize: '14px', lineHeight: '1.7' }}>
-          <p style={{ marginBottom: '15px', color: '#c0c0c0' }}>
-            The Request-For-Quote (RFQ) protocol enables peer-to-peer asset trading over the Lightning Network:
-          </p>
-          <div style={{ display: 'grid', gap: '12px', marginBottom: '15px' }}>
-            <div style={{
-              background: 'rgba(0, 255, 65, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(0, 255, 65, 0.15)'
-            }}>
-              <div style={{ color: '#00ff41', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                💰 Buy Offers
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                Express interest in purchasing specific assets from peers
-              </div>
-            </div>
-            <div style={{
-              background: 'rgba(255, 68, 68, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(255, 68, 68, 0.15)'
-            }}>
-              <div style={{ color: '#ff4444', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                💵 Sell Offers
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                List your assets for sale and wait for interested buyers
-              </div>
-            </div>
-            <div style={{
-              background: 'rgba(102, 126, 234, 0.05)',
-              padding: '12px 15px',
-              borderRadius: '8px',
-              border: '1px solid rgba(102, 126, 234, 0.15)'
-            }}>
-              <div style={{ color: '#667eea', fontWeight: '600', marginBottom: '4px', fontSize: '14px' }}>
-                📊 Peer Quotes
-              </div>
-              <div style={{ fontSize: '13px' }}>
-                View active offers from connected Lightning Network nodes
-              </div>
-            </div>
-          </div>
-          <div style={{
-            background: 'rgba(0,0,0,0.3)',
-            padding: '12px 15px',
-            borderRadius: '8px',
-            fontSize: '13px',
-            color: '#b0b0b0',
-            lineHeight: '1.6'
-          }}>
-            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> Enable auto-refresh to monitor the market in real-time.
-            RFQ quotes are peer-to-peer, so you'll need to be connected to other nodes to see active offers.
-          </div>
-        </div>
       </div>
     </div>
   );
