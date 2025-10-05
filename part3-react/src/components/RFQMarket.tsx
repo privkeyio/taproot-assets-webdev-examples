@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useTaprootAssets } from '../hooks/useTaprootAssets';
 
 export function RFQMarket() {
@@ -21,16 +21,6 @@ export function RFQMarket() {
     });
     return Array.from(map.values());
   })();
-
-  // Auto-refresh quotes every 5 seconds when enabled
-  useEffect(() => {
-    if (autoRefresh) {
-      const interval = setInterval(() => {
-        loadQuotes(true);
-      }, 5000);
-      return () => clearInterval(interval);
-    }
-  }, [autoRefresh]);
 
   const createBuyOffer = async () => {
     if (!selectedAsset) {
@@ -116,7 +106,7 @@ export function RFQMarket() {
     }
   };
 
-  const loadQuotes = async (silent = false) => {
+  const loadQuotes = useCallback(async (silent = false) => {
     try {
       if (!silent) {
         setLoading(true);
@@ -147,7 +137,17 @@ export function RFQMarket() {
         setLoading(false);
       }
     }
-  };
+  }, []);
+
+  // Auto-refresh quotes every 5 seconds when enabled
+  useEffect(() => {
+    if (autoRefresh) {
+      const interval = setInterval(() => {
+        loadQuotes(true);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [autoRefresh, loadQuotes]);
 
   const buyQuotes = quotes?.buy_quotes || [];
   const sellQuotes = quotes?.sell_quotes || [];
@@ -221,15 +221,36 @@ export function RFQMarket() {
             </div>
           </div>
           <div style={{
-            background: 'rgba(0,0,0,0.3)',
-            padding: '12px 15px',
+            background: 'rgba(255, 165, 0, 0.1)',
+            padding: '15px',
             borderRadius: '8px',
             fontSize: '13px',
-            color: '#b0b0b0',
-            lineHeight: '1.6'
+            color: '#c0c0c0',
+            lineHeight: '1.8',
+            border: '1px solid rgba(255, 165, 0, 0.2)'
           }}>
-            <strong style={{ color: '#667eea' }}>💡 Pro Tip:</strong> Enable auto-refresh to monitor the market in real-time.
-            RFQ quotes are peer-to-peer, so you'll need to be connected to other nodes to see active offers.
+            <div style={{ color: '#ffa500', fontWeight: '600', marginBottom: '8px', fontSize: '14px' }}>
+              🔗 Understanding Peer-to-Peer RFQ
+            </div>
+            <div style={{ marginBottom: '8px' }}>
+              <strong style={{ color: '#ffa500' }}>Important:</strong> RFQ operates as a peer-to-peer market over the Lightning Network.
+              This means:
+            </div>
+            <ul style={{ margin: '8px 0', paddingLeft: '20px' }}>
+              <li style={{ marginBottom: '6px' }}>
+                <strong>Your own offers won't appear in your quotes list</strong> - they're broadcast to other nodes
+              </li>
+              <li style={{ marginBottom: '6px' }}>
+                <strong>To see quotes, you need connected peer nodes</strong> that have created their own buy/sell offers
+              </li>
+              <li style={{ marginBottom: '6px' }}>
+                <strong>Empty quotes are normal</strong> when running a single node or when peers haven't created offers
+              </li>
+            </ul>
+            <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid rgba(255, 165, 0, 0.15)' }}>
+              <strong style={{ color: '#667eea' }}>💡 Testing Tip:</strong> To see the RFQ market in action, set up multiple
+              tapd nodes in Polar and connect them via Lightning channels. Create offers on different nodes to simulate a real market.
+            </div>
           </div>
         </div>
       </div>
