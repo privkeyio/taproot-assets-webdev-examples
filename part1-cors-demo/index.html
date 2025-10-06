@@ -217,18 +217,42 @@
                 <li>Why TLS certificates cause issues</li>
             </ul>
             <p style="margin-top: 15px;"><strong>The Error You'll See:</strong></p>
-            <code style="display: block; background: #f4f4f4; padding: 10px; border-radius: 4px; margin-top: 5px;">
+            <code style="display: block; background: rgba(0, 0, 0, 0.7); padding: 10px; border-radius: 4px; margin-top: 5px; color: #ff4444; border: 1px solid rgba(255, 68, 68, 0.3);">
                 Access to fetch at 'https://127.0.0.1:8289/v1/taproot-assets/assets' from origin 'http://localhost:8000' has been blocked by CORS policy
             </code>
         </div>
 
-        <button onclick="clearConsole()" style="background-color: #dc3545; margin-bottom: 20px;">Clear Console</button>
+        <div class="info-banner">
+            <h3>📚 Context: The Three Barriers</h3>
+            <p style="margin-bottom: 15px;">In Part 0, we set up the gateway to handle CORS, macaroons, and TLS. But <strong>why</strong> are these issues? Let's understand what you're about to experience:</p>
 
-        <div class="warning">
-            <strong>⚠️ This demo shows why web developers struggle with TAPD integration</strong><br>
-            TAPD REST API: https://127.0.0.1:8289<br>
-            Expected issues: CORS errors, TLS certificate problems, macaroon authentication complexity
+            <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                <h4 style="color: #ffffff; margin-bottom: 10px;">🛡️ CORS (Cross-Origin Resource Sharing)</h4>
+                <p style="margin-bottom: 8px;"><strong>What it is:</strong> A browser security feature that blocks web pages from making requests to a different domain/port than the one that served the page.</p>
+                <p style="margin-bottom: 8px;"><strong>Why it exists:</strong> Prevents malicious websites from accessing your sensitive APIs without permission.</p>
+                <p><strong>The problem:</strong> Your web app (<code>http://localhost:8999</code>) trying to call TAPD (<code>https://127.0.0.1:8289</code>) = different origins = blocked!</p>
+            </div>
+
+            <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                <h4 style="color: #ffffff; margin-bottom: 10px;">🍪 Macaroon Authentication</h4>
+                <p style="margin-bottom: 8px;"><strong>What it is:</strong> A cryptographic credential (like a fancy cookie) that proves you're authorized to use TAPD/LND APIs.</p>
+                <p style="margin-bottom: 8px;"><strong>Why it exists:</strong> Security! Only authorized applications can create assets, send transactions, etc.</p>
+                <p><strong>The problem:</strong> Macaroons are binary files stored on your file system. Web browsers can't read local files for security reasons, and you <strong>definitely shouldn't</strong> expose admin credentials to frontend code!</p>
+            </div>
+
+            <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                <h4 style="color: #ffffff; margin-bottom: 10px;">🔒 TLS Certificates</h4>
+                <p style="margin-bottom: 8px;"><strong>What it is:</strong> HTTPS encryption that secures communication between your app and the server.</p>
+                <p style="margin-bottom: 8px;"><strong>Why Polar uses self-signed certs:</strong> Development environments generate their own certificates instead of using a Certificate Authority (like Let's Encrypt).</p>
+                <p><strong>The problem:</strong> Browsers reject self-signed certificates by default because they can't verify their authenticity. This is the "Your connection is not private" warning you see.</p>
+            </div>
+
+            <p style="margin-top: 15px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-left: 4px solid #667eea; border-radius: 4px;">
+                <strong>💡 The Gateway Solution:</strong> The REST gateway from Part 0 sits between your web app and TAPD. It runs as a server (not in the browser), so it can read macaroon files, handle TLS certificates, and add proper CORS headers. This is why we need it!
+            </p>
         </div>
+
+        <button onclick="clearConsole()" style="background-color: #dc3545; color: white; margin-bottom: 20px;">Clear Console</button>
 
         <div class="content-wrapper">
             <div class="left-panel">
