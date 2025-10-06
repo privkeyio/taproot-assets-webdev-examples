@@ -528,6 +528,7 @@ nano .env  # or use your preferred editor</div>
 TAPROOT_ASSETS_HOST=127.0.0.1:8289
 
 # Find these in Polar (click node → "Connect" → "File Paths")
+# ⚠️ IMPORTANT: You MUST use the ADMIN macaroon for both TAPD and LND
 TAPD_MACAROON_PATH=/home/yourname/.polar/networks/1/volumes/tapd/alice-tap/data/regtest/admin.macaroon
 LND_MACAROON_PATH=/home/yourname/.polar/networks/1/volumes/lnd/alice/data/chain/bitcoin/regtest/admin.macaroon
 
@@ -537,6 +538,10 @@ TLS_VERIFY=false
 # Gateway settings
 SERVER_ADDRESS=127.0.0.1:8080
 CORS_ORIGINS=http://localhost:8999,http://localhost:5173</div>
+
+            <div class="warning-box">
+                <strong>⚠️ IMPORTANT: Use the ADMIN macaroon!</strong> The gateway requires the <code>admin.macaroon</code> file (NOT <code>readonly.macaroon</code> or any other macaroon) to have full permissions for both TAPD and LND operations.
+            </div>
 
             <div class="info-box">
                 <strong>💡 Tip:</strong> In Polar, click your node → "Connect" tab → "File Paths" section to find the exact macaroon paths for your system.
