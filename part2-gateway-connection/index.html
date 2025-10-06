@@ -89,13 +89,19 @@
             font-size: 14px;
         }
         .setup-banner {
-            background: rgba(33, 150, 243, 0.1);
-            border-left: 4px solid #2196f3;
-            color: #bbdefb;
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-size: 14px;
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.15), rgba(255, 152, 0, 0.15));
+            border: 3px solid #ffc107;
+            color: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-size: 16px;
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
+            animation: attention-pulse 2s ease-in-out infinite;
+        }
+        @keyframes attention-pulse {
+            0%, 100% { box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3); }
+            50% { box-shadow: 0 8px 30px rgba(255, 193, 7, 0.6); }
         }
         .setup-banner code {
             background: rgba(0, 0, 0, 0.5);
@@ -259,10 +265,12 @@
         </div>
 
         <div class="setup-banner">
-            <strong>⚠️ IMPORTANT: Setup Required!</strong><br>
-            1. In Polar: Click LND node (alice) → <strong>Deposit Funds</strong> tab → Amount: <strong>1000000</strong> → Click <strong>Deposit</strong><br>
-            2. In Polar: Click Bitcoin node → Actions → <strong>Auto Mine</strong> → Set to <strong>30 seconds</strong> → Click <strong>Start</strong><br>
-            3. Wait 30-60 seconds for deposit to confirm, then start minting! ✅
+            <div style="font-size: 20px; font-weight: bold; margin-bottom: 15px;">⚠️ IMPORTANT: Setup Required Before Starting!</div>
+            <div style="font-size: 16px; line-height: 1.8;">
+                <strong>1.</strong> In Polar: Click <strong>LND node (alice)</strong> → <strong>Deposit Funds</strong> tab → Amount: <strong>1000000</strong> → Click <strong>Deposit</strong><br>
+                <strong>2.</strong> In Polar: Click <strong>Bitcoin node</strong> → Actions → <strong>Auto Mine</strong> → Set to <strong>30 seconds</strong> → Click <strong>Start</strong><br>
+                <strong>3.</strong> Wait 30-60 seconds for deposit to confirm, then start minting below! ✅
+            </div>
         </div>
 
         <div class="card" style="margin-bottom: 20px;">

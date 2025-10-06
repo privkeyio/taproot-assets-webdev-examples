@@ -2,7 +2,7 @@
 
 Get your development environment ready in 5 minutes.
 
-> **💡 Prefer a visual guide?** Visit **http://localhost:8999** after running the workshop script for an interactive setup walkthrough!
+> **💡 Prefer a visual guide?** Visit **http://localhost:8999/part0-setup/** after running the workshop script for an interactive setup walkthrough!
 
 ## Prerequisites
 
@@ -64,7 +64,7 @@ Using Cargo (Rust):
 cargo run
 ```
 
-## Step 4: Run All Workshop Demos
+## Step 4: Start the Workshop
 
 Back in the workshop repository:
 
@@ -73,7 +73,7 @@ cd ../taproot-assets-webdev-examples
 ./scripts/start-workshop.sh
 ```
 
-This starts all demo servers on ports 8000-8004.
+This starts the interactive setup guide at http://localhost:8999/part0-setup/
 
 ## Step 5: Verify Everything Works
 
@@ -109,6 +109,6 @@ The gateway handles:
 ## Next Steps
 
 Ready? Proceed to:
-- **Interactive Guide:** [http://localhost:8999](http://localhost:8999) (recommended)
-- **Part 1 Demo:** [http://localhost:8000](http://localhost:8000) to see why this gateway is necessary!
+- **Interactive Guide:** [http://localhost:8999/part0-setup/](http://localhost:8999/part0-setup/) (recommended)
+- **Part 1 Demo:** [http://localhost:8999/part1-cors-demo/](http://localhost:8999/part1-cors-demo/) to see why this gateway is necessary!
 - **Text Guide:** [Part 1 README](../part1-cors-demo/README.md) (fallback)

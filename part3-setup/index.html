@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part 3 Setup: React App</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #000000;
+            background-image: url('../part3-starter/assets/skyline.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 0;
+        }
+        .app {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        .logo {
+            display: block;
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        h2 {
+            font-size: 1.8em;
+            margin: 25px 0 15px;
+            color: #ffffff;
+        }
+        h3 {
+            font-size: 1.3em;
+            margin: 20px 0 10px;
+            color: #ffffff;
+        }
+        .subtitle {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+        .content-card {
+            background: rgba(26, 26, 46, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+        .content-card p, .content-card ul, .content-card li {
+            color: #d0d0d0;
+            line-height: 1.8;
+            font-size: 1.05em;
+        }
+        .content-card ul {
+            margin-left: 25px;
+            margin-top: 10px;
+        }
+        .content-card li {
+            margin: 8px 0;
+        }
+        .code-block {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: #00ff41;
+            overflow-x: auto;
+            font-size: 0.95em;
+        }
+        .code-block .comment {
+            color: #888;
+        }
+        .highlight {
+            background: rgba(255, 255, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 3px;
+            color: #ffff00;
+            font-weight: 600;
+        }
+        .warning {
+            background: rgba(255, 165, 0, 0.1);
+            border-left: 4px solid #ffa500;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #ffd280;
+        }
+        .success {
+            background: rgba(0, 255, 65, 0.1);
+            border-left: 4px solid #00ff41;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            color: #80ff9f;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+        .nav-button {
+            background: rgba(255, 255, 255, 0.9);
+            color: #000000;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .nav-button:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
+        }
+        .step-number {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000000;
+            width: 35px;
+            height: 35px;
+            line-height: 35px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .checklist {
+            list-style: none;
+            margin-left: 0 !important;
+        }
+        .checklist li {
+            padding-left: 30px;
+            position: relative;
+        }
+        .checklist li:before {
+            content: '✅';
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <img src="../part3-starter/assets/privkey-logo.png" alt="PrivKey LLC" class="logo">
+        <header>
+            <h1>⚛️ Part 3: React Setup</h1>
+            <p class="subtitle">Setting up the full-featured React application</p>
+        </header>
+
+        <div class="navigation">
+            <a href="/part3-starter/" class="nav-button">← Back to Portfolio Viewer</a>
+        </div>
+
+        <div class="content-card">
+            <h2>📋 Prerequisites Check</h2>
+            <ul class="checklist">
+                <li>REST Gateway running at <span class="highlight">http://localhost:8080</span></li>
+                <li>Funded LND wallet in Polar (see Part 2)</li>
+                <li>Some Taproot Assets already created (from Part 2)</li>
+                <li>Bun package manager installed</li>
+            </ul>
+        </div>
+
+        <div class="content-card">
+            <h2><span class="step-number">1</span>Install Bun</h2>
+            <p>If you don't have Bun installed yet, run this command:</p>
+            <div class="code-block">curl -fsSL https://bun.sh/install | bash</div>
+            <p>Then reload your shell:</p>
+            <div class="code-block">source ~/.bashrc  <span class="comment"># or ~/.zshrc</span></div>
+            <p>Verify installation:</p>
+            <div class="code-block">bun --version</div>
+        </div>
+
+        <div class="content-card">
+            <h2><span class="step-number">2</span>Navigate to the React App</h2>
+            <p>Open a new terminal window and navigate to the React app directory:</p>
+            <div class="code-block">cd taproot-assets-webdev-examples/part3-react</div>
+        </div>
+
+        <div class="content-card">
+            <h2><span class="step-number">3</span>Install Dependencies</h2>
+            <p>Install all required npm packages:</p>
+            <div class="code-block">bun install</div>
+            <div class="success">
+                <strong>✓ This will take 10-30 seconds</strong><br>
+                Bun will download React, TypeScript, Vite, and all dependencies
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h2><span class="step-number">4</span>Start the Development Server</h2>
+            <p>Launch the React app:</p>
+            <div class="code-block">bun dev</div>
+            <div class="success">
+                <strong>✓ You should see:</strong><br>
+                VITE v5.x.x  ready in XXX ms<br>
+                ➜  Local:   http://localhost:5173/<br>
+                ➜  press h + enter to show help
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h2><span class="step-number">5</span>Open the Application</h2>
+            <p>Open your browser and visit:</p>
+            <div class="code-block">http://localhost:5173</div>
+            <div class="warning">
+                <strong>⚠️ Port Conflict?</strong><br>
+                If 5173 is already in use, Vite will use port 5174 or 5175 automatically.<br>
+                Check the terminal output for the actual port.
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h2>🎯 What You'll See</h2>
+            <p>The React app includes these tabs:</p>
+            <ul>
+                <li><strong>📊 Portfolio</strong> - View all your assets with search and filtering</li>
+                <li><strong>🪙 Mint</strong> - Create new assets with the minting wizard</li>
+                <li><strong>📤 Send</strong> - Transfer assets to Taproot Asset addresses</li>
+                <li><strong>📥 Receive</strong> - Generate addresses to receive assets</li>
+                <li><strong>📜 Transfers</strong> - View complete transaction history</li>
+                <li><strong>🔥 Burn</strong> - Permanently destroy assets</li>
+                <li><strong>🌐 Network</strong> - View daemon info and universe stats</li>
+            </ul>
+        </div>
+
+        <div class="content-card">
+            <h2>🔧 Troubleshooting</h2>
+
+            <h3>Gateway Connection Failed</h3>
+            <div class="code-block">curl http://localhost:8080/health</div>
+            <p>If this fails, restart the gateway:</p>
+            <div class="code-block">cd ../taproot-assets-rest-gateway<br>cargo run</div>
+
+            <h3>Port Already in Use</h3>
+            <div class="code-block">lsof -ti:5173 | xargs kill -9<br>bun dev</div>
+
+            <h3>Bun Not Found</h3>
+            <p>Make sure you reloaded your shell after installing:</p>
+            <div class="code-block">source ~/.bashrc  <span class="comment"># or ~/.zshrc</span></div>
+
+            <h3>No Assets Showing</h3>
+            <p>Make sure you:</p>
+            <ul>
+                <li>Completed Part 2 and minted some assets</li>
+                <li>Waited ~30 seconds for blockchain confirmation</li>
+                <li>Have auto-mine enabled in Polar (30s interval)</li>
+            </ul>
+        </div>
+
+        <div class="content-card">
+            <h2>✅ Success Checklist</h2>
+            <p>You're ready when:</p>
+            <ul class="checklist">
+                <li>Bun is installed and working</li>
+                <li><code>bun dev</code> is running without errors</li>
+                <li>Browser shows the React app at localhost:5173</li>
+                <li>Gateway is running on port 8080</li>
+                <li>Portfolio tab shows your existing assets</li>
+            </ul>
+        </div>
+
+        <div class="navigation" style="margin-top: 30px;">
+            <a href="/part3-starter/" class="nav-button">← Back to Portfolio Viewer</a>
+            <a href="http://localhost:5173/" class="nav-button" target="_blank">Open React App →</a>
+        </div>
+    </div>
+</body>
+</html>

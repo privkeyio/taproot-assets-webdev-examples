@@ -559,23 +559,17 @@ CORS_ORIGINS=http://localhost:8999,http://localhost:5173</div>
             </div>
         </div>
 
-        <!-- Step 4: Start Workshop -->
+        <!-- Step 4: Verify Setup -->
         <div class="card">
-            <h2><span class="step-number">5</span>Run All Workshop Demos</h2>
-            <p style="margin-bottom: 15px;">Navigate back to the workshop repository and start the demos:</p>
-            <div class="code-block"># Go back to the workshop folder
-cd /path/to/taproot-assets-webdev-examples
+            <h2><span class="step-number">5</span>Verify Your Setup</h2>
+            <p style="margin-bottom: 15px;">Run the verification script to ensure everything is working:</p>
+            <div class="code-block">./scripts/verify-workshop.sh</div>
 
-# Start all workshop demos
-./scripts/start-workshop.sh</div>
+            <p style="margin: 15px 0;">You should see all services reporting as healthy.</p>
 
-            <p style="margin: 15px 0;">This starts all demo servers:</p>
-            <ul>
-                <li>Part 0 (Setup): <a href="http://localhost:8999">http://localhost:8999</a></li>
-                <li>Part 1 (CORS Demo): <a href="http://localhost:8000">http://localhost:8000</a></li>
-                <li>Part 2 (Workshop): <a href="http://localhost:8001">http://localhost:8001</a></li>
-                <li>Part 3 (Portfolio): <a href="http://localhost:8002">http://localhost:8002</a></li>
-            </ul>
+            <div class="success-box">
+                <strong>✅ You're all set!</strong> You can now proceed to Part 1 to see why the REST gateway is necessary.
+            </div>
         </div>
 
         <!-- What the Gateway Does -->
