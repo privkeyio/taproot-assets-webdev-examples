@@ -345,15 +345,6 @@ Click any button to see the issues web developers face.</div>
                 log(`CORS Error (as expected): ${error.message}`, true);
                 log('This is the wall every web developer hits!', true);
                 log('Browser security prevents direct calls to TAPD', true);
-                
-                // Show what the actual error looks like
-                if (error.message.includes('CORS')) {
-                    log('CORS policy blocks cross-origin requests', true);
-                } else if (error.message.includes('net::')) {
-                    log('Network error - likely CORS or TLS certificate issue', true);
-                } else {
-                    log('Unexpected error type', true);
-                }
             }
         }
 
