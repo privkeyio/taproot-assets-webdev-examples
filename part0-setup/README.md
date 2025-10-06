@@ -54,7 +54,7 @@ TLS_VERIFY=false
 
 # Gateway settings
 SERVER_ADDRESS=127.0.0.1:8080
-CORS_ORIGINS=http://localhost:8000,http://localhost:8001,http://localhost:8002,http://localhost:8003,http://localhost:8004
+CORS_ORIGINS=http://localhost:8999,http://localhost:5173
 ```
 
 ## Step 3: Start the Gateway
