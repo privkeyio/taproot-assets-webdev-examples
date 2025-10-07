@@ -224,28 +224,13 @@
 
         <div class="info-banner">
             <h3>📚 Context: The Three Barriers</h3>
-            <p style="margin-bottom: 15px;">In Part 0, we set up the gateway to handle CORS, macaroons, and TLS. But <strong>why</strong> are these issues? Let's understand what you're about to experience:</p>
+            <p style="margin-bottom: 15px;">In Part 0, we set up the gateway to handle three fundamental web security issues:</p>
 
-            <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
-                <h4 style="color: #ffffff; margin-bottom: 10px;">🛡️ CORS (Cross-Origin Resource Sharing)</h4>
-                <p style="margin-bottom: 8px;"><strong>What it is:</strong> A browser security feature that blocks web pages from making requests to a different domain/port than the one that served the page.</p>
-                <p style="margin-bottom: 8px;"><strong>Why it exists:</strong> Prevents malicious websites from accessing your sensitive APIs without permission.</p>
-                <p><strong>The problem:</strong> Your web app (<code>http://localhost:8999</code>) trying to call TAPD (<code>https://127.0.0.1:8289</code>) = different origins = blocked!</p>
-            </div>
-
-            <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
-                <h4 style="color: #ffffff; margin-bottom: 10px;">🍪 Macaroon Authentication</h4>
-                <p style="margin-bottom: 8px;"><strong>What it is:</strong> A cryptographic credential (like a fancy cookie) that proves you're authorized to use TAPD/LND APIs.</p>
-                <p style="margin-bottom: 8px;"><strong>Why it exists:</strong> Security! Only authorized applications can create assets, send transactions, etc.</p>
-                <p><strong>The problem:</strong> Macaroons are binary files stored on your file system. Web browsers can't read local files for security reasons, and you <strong>definitely shouldn't</strong> expose admin credentials to frontend code!</p>
-            </div>
-
-            <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
-                <h4 style="color: #ffffff; margin-bottom: 10px;">🔒 TLS Certificates</h4>
-                <p style="margin-bottom: 8px;"><strong>What it is:</strong> HTTPS encryption that secures communication between your app and the server.</p>
-                <p style="margin-bottom: 8px;"><strong>Why Polar uses self-signed certs:</strong> Development environments generate their own certificates instead of using a Certificate Authority (like Let's Encrypt).</p>
-                <p><strong>The problem:</strong> Browsers reject self-signed certificates by default because they can't verify their authenticity. This is the "Your connection is not private" warning you see.</p>
-            </div>
+            <ul style="margin-left: 20px;">
+                <li style="margin: 8px 0;"><strong>🛡️ CORS:</strong> Browser security that blocks cross-origin requests</li>
+                <li style="margin: 8px 0;"><strong>🍪 Macaroons:</strong> Binary authentication files that browsers can't access</li>
+                <li style="margin: 8px 0;"><strong>🔒 TLS Certificates:</strong> Self-signed certificates that browsers reject</li>
+            </ul>
 
             <p style="margin-top: 15px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-left: 4px solid #667eea; border-radius: 4px;">
                 <strong>💡 The Gateway Solution:</strong> The REST gateway from Part 0 sits between your web app and TAPD. It runs as a server (not in the browser), so it can read macaroon files, handle TLS certificates, and add proper CORS headers. This is why we need it!
@@ -258,7 +243,14 @@
             <div class="left-panel">
                 <div class="demo-section">
                     <h2>1. Direct API Call (Will Fail with CORS)</h2>
-                    <p>This demonstrates the immediate wall web developers hit when trying to call TAPD directly from a browser:</p>
+                    <p style="margin-bottom: 15px;">This demonstrates the immediate wall web developers hit when trying to call TAPD directly from a browser.</p>
+
+                    <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                        <p style="margin-bottom: 10px;"><strong>What this call does:</strong> Attempts to fetch the list of Taproot Assets from TAPD's REST API endpoint <code>/v1/taproot-assets/assets</code>.</p>
+                        <p style="margin-bottom: 10px;"><strong>What you'll see:</strong> A CORS error because the browser blocks cross-origin requests. Your web app (<code>http://localhost:8999</code>) and TAPD (<code>https://127.0.0.1:8289</code>) are different origins.</p>
+                        <p><strong>Expected response (if CORS wasn't blocking):</strong> A JSON array of asset objects with fields like <code>asset_genesis</code>, <code>amount</code>, and <code>asset_type</code>.</p>
+                    </div>
+
                     <button onclick="attemptDirectCall()">Try Direct API Call</button>
                     <div class="code-block">// What we're trying to do:
 fetch('https://127.0.0.1:8289/v1/taproot-assets/assets')
@@ -268,16 +260,30 @@ fetch('https://127.0.0.1:8289/v1/taproot-assets/assets')
 
                 <div class="demo-section">
                     <h2>2. Macaroon Authentication Complexity</h2>
-                    <p>Even if CORS wasn't an issue, the macaroon authentication is complex:</p>
+                    <p style="margin-bottom: 15px;">Even if CORS wasn't an issue, the macaroon authentication is complex.</p>
+
+                    <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                        <p style="margin-bottom: 10px;"><strong>What this demonstrates:</strong> The multi-step process required to authenticate with TAPD using macaroons.</p>
+                        <p style="margin-bottom: 10px;"><strong>Why it's complex:</strong> Macaroons are binary files stored on your file system that must be read, encoded to hex, and included as HTTP headers. Browsers can't access local files, and you shouldn't expose admin credentials in frontend code.</p>
+                        <p><strong>The security problem:</strong> If you could do this in a browser, any malicious script on your page could steal your admin macaroon and take over your node!</p>
+                    </div>
+
                     <button onclick="showMacaroonComplexity()">Show Macaroon Requirements</button>
                     <div class="warning">
-                        <strong>Macaroon Location:</strong> /Users/kyle/.polar/networks/1/volumes/lnd/regtest/admin.macaroon
+                        <strong>Macaroon Location:</strong> /Users/yourusername/.polar/networks/1/volumes/lnd/regtest/admin.macaroon
                     </div>
                 </div>
 
                 <div class="demo-section">
                     <h2>3. TLS Certificate Issues</h2>
-                    <p>Self-signed certificates add another layer of complexity:</p>
+                    <p style="margin-bottom: 15px;">Self-signed certificates add another layer of complexity.</p>
+
+                    <div style="margin: 15px 0; padding: 15px; background: rgba(255, 255, 255, 0.05); border-radius: 8px;">
+                        <p style="margin-bottom: 10px;"><strong>What this demonstrates:</strong> Why browsers reject TAPD's self-signed TLS certificate by default.</p>
+                        <p style="margin-bottom: 10px;"><strong>What's a self-signed certificate:</strong> Development environments like Polar generate their own HTTPS certificates instead of using a trusted Certificate Authority. This is normal for local development but browsers treat them as untrustworthy.</p>
+                        <p><strong>The result:</strong> Even if you manually accept the certificate warning, CORS will still block the request. You'd need both certificate acceptance AND CORS headers to succeed.</p>
+                    </div>
+
                     <button onclick="showTLSIssues()">Show TLS Problems</button>
                 </div>
 
@@ -370,7 +376,7 @@ Click any button to see the issues web developers face.</div>
             log('=== TLS CERTIFICATE PROBLEMS ===');
             log('1. TAPD uses self-signed certificates');
             log('2. Browsers reject self-signed certs by default');
-            log('3. Certificate path: /Users/kyle/.polar/networks/1/volumes/lnd/alice-tap/tls.cert');
+            log('3. Certificate path: /Users/yourusername/.polar/networks/1/volumes/lnd/alice-tap/tls.cert');
             log('4. Cannot easily import custom CA in web apps');
             log('');
             log('Even with --ignore-certificate-errors flag:', true);
