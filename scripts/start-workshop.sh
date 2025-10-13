@@ -20,7 +20,14 @@ fi
 
 # Kill any existing Python servers
 echo -e "${BLUE}Cleaning up existing servers...${NC}"
-pkill -f "python3 -m http.server" 2>/dev/null
+# Kill any Python server on port 8999 specifically
+lsof -ti:8999 | xargs kill -9 2>/dev/null
+# Also kill any Python http.server processes as backup
+pkill -f "python3 -m http.server 8999" 2>/dev/null
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✅ Stopped existing workshop server${NC}"
+    sleep 1  # Give it a moment to fully release the port
+fi
 
 # Start all demo servers
 echo -e "${BLUE}Starting demo servers...${NC}"
