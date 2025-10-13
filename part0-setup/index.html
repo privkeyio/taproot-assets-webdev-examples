@@ -562,6 +562,11 @@ CORS_ORIGINS=http://localhost:8999,http://localhost:5173</div>
             <div class="success-box">
                 <strong>✅ Success!</strong> Your gateway is now running at <code>http://localhost:8080</code>
             </div>
+
+            <div style="margin-top: 15px;">
+                <button class="button" onclick="checkGatewayHealth()">Verify Gateway Connection</button>
+                <div id="gatewayCheckResult" style="margin-top: 10px;"></div>
+            </div>
         </div>
 
         <!-- Step 4: Verify Setup -->
@@ -657,10 +662,12 @@ cd ~/Projects/taproot-assets-webdev-examples  # adjust path to match your setup
         async function checkGatewayHealth() {
             const statusEl = document.getElementById('status');
             const detailsEl = document.getElementById('statusDetails');
+            const gatewayCheckEl = document.getElementById('gatewayCheckResult');
 
             statusEl.className = 'status-indicator checking';
             statusEl.textContent = 'Checking gateway connection...';
             detailsEl.innerHTML = '';
+            if (gatewayCheckEl) gatewayCheckEl.innerHTML = '';
 
             try {
                 const response = await fetch(`${GATEWAY_URL}/health`);
@@ -670,13 +677,15 @@ cd ~/Projects/taproot-assets-webdev-examples  # adjust path to match your setup
                     statusEl.className = 'status-indicator connected';
                     statusEl.textContent = '✅ Gateway Connected';
 
-                    detailsEl.innerHTML = `
+                    const successMessage = `
                         <div class="success-box">
                             <strong>Gateway is running!</strong><br>
                             Response: <code>${JSON.stringify(data)}</code><br><br>
                             You're ready to proceed to Part 1!
                         </div>
                     `;
+                    detailsEl.innerHTML = successMessage;
+                    if (gatewayCheckEl) gatewayCheckEl.innerHTML = successMessage;
                 } else {
                     throw new Error(`HTTP ${response.status}`);
                 }
@@ -684,7 +693,7 @@ cd ~/Projects/taproot-assets-webdev-examples  # adjust path to match your setup
                 statusEl.className = 'status-indicator disconnected';
                 statusEl.textContent = '❌ Gateway Disconnected';
 
-                detailsEl.innerHTML = `
+                const errorMessage = `
                     <div class="warning-box">
                         <strong>Cannot connect to gateway</strong><br>
                         Error: ${error.message}<br><br>
@@ -695,6 +704,8 @@ cd ~/Projects/taproot-assets-webdev-examples  # adjust path to match your setup
                         4. Your Polar network is running
                     </div>
                 `;
+                detailsEl.innerHTML = errorMessage;
+                if (gatewayCheckEl) gatewayCheckEl.innerHTML = errorMessage;
             }
         }
 
