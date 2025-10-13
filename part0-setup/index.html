@@ -368,7 +368,17 @@ Run installer
 ✅ CHECK "Add Python to PATH"
 Click "Install Now"</div>
 
-                <p style="margin: 10px 0;"><strong>4. Install Polar</strong></p>
+                <p style="margin: 10px 0;"><strong>4. Install Docker Desktop</strong></p>
+                <div class="warning-box">
+                    <strong>⚠️ Required for Polar:</strong> Polar requires Docker to create local networks.
+                </div>
+                <a href="https://www.docker.com/products/docker-desktop/" target="_blank" class="download-link">📥 Download Docker Desktop for Windows</a>
+                <div class="code-block">Download from https://www.docker.com/products/docker-desktop/
+Run installer
+Start Docker Desktop
+Wait for it to finish starting (icon in system tray will stop animating)</div>
+
+                <p style="margin: 10px 0;"><strong>5. Install Polar</strong></p>
                 <a href="https://lightningpolar.com" target="_blank" class="download-link">📥 Download Polar for Windows</a>
                 <div class="instruction-box">
                     <ol>
@@ -413,7 +423,18 @@ source "$HOME/.cargo/env"</div>
                 <p style="margin: 10px 0;"><strong>4. Install Python 3</strong></p>
                 <div class="code-block">brew install python3</div>
 
-                <p style="margin: 10px 0;"><strong>5. Install Polar</strong></p>
+                <p style="margin: 10px 0;"><strong>5. Install Docker Desktop</strong></p>
+                <div class="warning-box">
+                    <strong>⚠️ Required for Polar:</strong> Polar requires Docker to create local networks.
+                </div>
+                <a href="https://www.docker.com/products/docker-desktop/" target="_blank" class="download-link">📥 Download Docker Desktop for macOS</a>
+                <div class="code-block">Download from https://www.docker.com/products/docker-desktop/
+Open the .dmg file
+Drag Docker to Applications
+Launch Docker Desktop
+Wait for it to finish starting (whale icon in menu bar will stop animating)</div>
+
+                <p style="margin: 10px 0;"><strong>6. Install Polar</strong></p>
                 <a href="https://lightningpolar.com" target="_blank" class="download-link">📥 Download Polar for macOS</a>
                 <div class="instruction-box">
                     <ol>
@@ -459,7 +480,37 @@ source "$HOME/.cargo/env"</div>
                 <p style="margin: 10px 0;"><strong>4. Install Python 3</strong></p>
                 <div class="code-block">sudo apt install python3 python3-pip -y</div>
 
-                <p style="margin: 10px 0;"><strong>5. Install Polar</strong></p>
+                <p style="margin: 10px 0;"><strong>5. Install Docker Server</strong></p>
+                <div class="warning-box">
+                    <strong>⚠️ Required for Polar:</strong> Polar requires Docker to create local networks. Linux requires Docker Server (not Desktop).
+                </div>
+                <p style="margin: 10px 0;">Follow the installation guide for your Linux distribution:</p>
+                <a href="https://docs.docker.com/engine/install/#server" target="_blank" class="download-link">📖 Docker Server Installation Guide</a>
+                <div class="code-block"># Install Docker (Ubuntu/Debian example - see link above for other distros)
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add Docker repository
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+
+# Install Docker packages
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Add your user to docker group (avoids needing sudo for docker commands)
+sudo usermod -aG docker $USER
+
+# Apply group changes - either log out and log back in, OR run:
+newgrp docker
+
+# Verify Docker is running
+docker --version
+docker run hello-world</div>
+
+                <p style="margin: 10px 0;"><strong>6. Install Polar</strong></p>
                 <a href="https://lightningpolar.com" target="_blank" class="download-link">📥 Download Polar AppImage for Linux</a>
                 <div class="instruction-box">
                     <p><strong>Download and launch:</strong></p>
@@ -495,6 +546,7 @@ python3 --version</div>
                     <li>Git installed and accessible from terminal</li>
                     <li>Rust/Cargo installed (rustup)</li>
                     <li>Python 3 installed</li>
+                    <li>Docker installed and running</li>
                     <li>Polar installed with a network running</li>
                     <li>LND node (alice) with Taproot Assets enabled</li>
                 </ul>
