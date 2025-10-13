@@ -8,14 +8,14 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Check if gateway is running
+# Check if gateway is running (optional check, doesn't block startup)
 echo -e "${BLUE}Checking REST Gateway...${NC}"
 if curl -s http://localhost:8080/health > /dev/null 2>&1; then
     echo -e "${GREEN}✅ Gateway is running at http://localhost:8080${NC}"
 else
-    echo "❌ Gateway not running. Please start it first:"
-    echo "   cd ../taproot-assets-rest-gateway && cargo run"
-    exit 1
+    echo "⚠️  Gateway not detected at http://localhost:8080"
+    echo "   If you haven't set it up yet, see Part 0 for instructions."
+    echo "   Or start it with: cd ../taproot-assets-rest-gateway && cargo run"
 fi
 
 # Kill any existing Python servers
