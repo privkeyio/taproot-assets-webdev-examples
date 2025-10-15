@@ -56,6 +56,30 @@ export function useBurn() {
       }
 
       const result = await response.json();
+
+      // Check if the response contains an error (API returns 200 OK even for errors)
+      if (result.code) {
+        const errorMsg = result.message || 'Burn operation failed';
+
+        // Provide more helpful error messages for common issues
+        if (errorMsg.includes('burning all assets of an anchor output is not supported')) {
+          throw new Error(
+            'Cannot burn: This is the only asset in its UTXO. ' +
+            'For collectibles, you need multiple units across different UTXOs to burn any. ' +
+            'For divisible assets, try burning a smaller amount or send some to yourself first to create multiple UTXOs.'
+          );
+        }
+
+        if (errorMsg.includes('unable to select coins') || errorMsg.includes('funding')) {
+          throw new Error(
+            'Insufficient funds or UTXOs not ready. The asset might need to be confirmed on-chain first. ' +
+            'Try mining some blocks in Polar and waiting a moment.'
+          );
+        }
+
+        throw new Error(errorMsg);
+      }
+
       await fetchBurns();
       return result;
     } catch (err) {
